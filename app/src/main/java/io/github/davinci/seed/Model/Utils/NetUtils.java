@@ -12,7 +12,7 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
-import io.github.davinci.seed.Model.Entity.SeedData;
+import io.github.davinci.seed.Model.Entity.FeedlyData;
 
 /**
  * Created by ying on 10/18/15.
@@ -22,9 +22,9 @@ public class NetUtils {
     final OkHttpClient client = new OkHttpClient();
 
     final static MediaType MEDIA_TYPE_MARKDOWN
-            = MediaType.parse("text/json; charset=utf-8");
+            = MediaType.parse("application/json; charset=utf-8");
 
-    public void doGet(String href, final SeedNetCallback seedNetCallback) throws Exception{
+    public void doGet(String href, final SeedNetCallback seedNetCallback) {
         Request request = new Request.Builder()
                 .url(href)
                 .build();
@@ -43,20 +43,25 @@ public class NetUtils {
 
     }
 
-    public void doPost(String href, SeedData postData, final SeedNetCallback seedNetCallback) throws Exception{
+    public void doPost(String href, FeedlyData postData, final SeedNetCallback seedNetCallback) {
 
-        String postBody = new Gson().toJson(postData);
+        try {
+            String postBody = new Gson().toJson(postData);
 
-        Request request = new Request.Builder()
-                .url(href)
-                .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postBody))
-                .build();
+            Request request = new Request.Builder()
+                    .url(href)
+                    .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postBody))
+                    .build();
 
-        Response response = client.newCall(request).execute();
-        if (response.isSuccessful()) {
-            seedNetCallback.onSuccess(response.body().string());
-        } else {
-            Log.e("NetErr", response.body().string());
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                seedNetCallback.onSuccess(response.body().string());
+            } else {
+                Log.e("NetErr", response.body().string());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
