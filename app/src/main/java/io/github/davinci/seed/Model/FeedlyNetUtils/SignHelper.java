@@ -8,7 +8,11 @@ package io.github.davinci.seed.Model.FeedlyNetUtils;
 public class SignHelper {
 
     public static String getUserId() {
-        return new String();
+        return "";
+    }
+
+    public static String getToken() {
+        return "";
     }
 
 }

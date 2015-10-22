@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/iv_feed_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        tools:src="@color/gray_divider"
+        android:padding="8dp"
+        android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:id="@+id/tv_unread_count"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        tools:text="54"
+        android:layout_alignParentRight="true"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tv_feed_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_toRightOf="@id/iv_feed_icon"
+        android:layout_toLeftOf="@id/tv_unread_count"
+        tools:text="所有星标项目"
+        android:gravity="center_vertical"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_feed_title"
+        android:background="@color/gray_divider"/>
+
+</RelativeLayout>

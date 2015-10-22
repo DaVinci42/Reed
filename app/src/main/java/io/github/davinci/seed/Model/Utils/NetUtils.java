@@ -13,6 +13,7 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 
 import io.github.davinci.seed.Model.Entity.FeedlyData;
+import io.github.davinci.seed.Model.FeedlyNetUtils.SignHelper;
 
 /**
  * Created by ying on 10/18/15.
@@ -21,12 +22,15 @@ public class NetUtils {
 
     final OkHttpClient client = new OkHttpClient();
 
+    String token = SignHelper.getToken();
+
     final static MediaType MEDIA_TYPE_MARKDOWN
             = MediaType.parse("application/json; charset=utf-8");
 
     public void doGet(String href, final SeedNetCallback seedNetCallback) {
         Request request = new Request.Builder()
                 .url(href)
+                .addHeader("Authorization", "OAuth " + token)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -43,14 +47,13 @@ public class NetUtils {
 
     }
 
-    public void doPost(String href, FeedlyData postData, final SeedNetCallback seedNetCallback) {
+    public void doPost(String href, String postData, final SeedNetCallback seedNetCallback) {
 
         try {
-            String postBody = new Gson().toJson(postData);
-
             Request request = new Request.Builder()
                     .url(href)
-                    .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postBody))
+                    .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postData))
+                    .addHeader("Authorization", "OAuth " + token)
                     .build();
 
             Response response = client.newCall(request).execute();
@@ -64,4 +67,5 @@ public class NetUtils {
             e.printStackTrace();
         }
     }
+
 }
