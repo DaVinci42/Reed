@@ -5,12 +5,22 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Window;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import io.github.davinci.seed.Model.Entity.CategoryWithFeeds;
+import io.github.davinci.seed.Presenter.MainPresenter;
 import io.github.davinci.seed.R;
 import io.github.davinci.seed.View.Adapter.PagerAdapter;
+import io.github.davinci.seed.View.ViewInterface.MainView;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements MainView{
+
+    private HashMap<String, CategoryWithFeeds> mHashMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +28,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_main_activity);
 
+        getPresenter().updateCategoryFeedMap();
         initTabs();
     }
 
@@ -27,17 +38,22 @@ public class MainActivity extends FragmentActivity {
         PagerAdapter viewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
 
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab);
 
         tabLayout.addTab(tabLayout.newTab().setText("Unread"));
         tabLayout.addTab(tabLayout.newTab().setText("RecentlyRead"));
         tabLayout.addTab(tabLayout.newTab().setText("SavedForLater"));
 
-
-
-
     }
 
 
+
+    @Override
+    public void updateCategoryMap(HashMap<String, CategoryWithFeeds> hashMap) {
+        mHashMap = hashMap;
+    }
+
+    private MainPresenter getPresenter() {
+        return new MainPresenter();
+    }
 }

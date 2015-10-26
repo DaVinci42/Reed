@@ -9,33 +9,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.List;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import io.github.davinci.seed.Model.Entity.Feed;
 import io.github.davinci.seed.Presenter.UnreadPresenter;
 import io.github.davinci.seed.R;
-import io.github.davinci.seed.View.Adapter.TabRvAdapter;
+import io.github.davinci.seed.View.Adapter.PagerAdapter;
 import io.github.davinci.seed.View.ViewInterface.UnreadView;
 
 
 public class UnreadFragment extends Fragment implements UnreadView{
 
-    @Bind(R.id.rv)
-    RecyclerView mRv;
-
-    private List<Feed> mFeedList;
+    private RecyclerView mRv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        ButterKnife.bind(getActivity());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        mRv.setLayoutManager(mLayoutManager);
-        TabRvAdapter mTabRvAdapter = new TabRvAdapter(mFeedList);
-        mRv.setAdapter(mTabRvAdapter);
-
+        initRv();
         return inflater.inflate(R.layout.widget_rv, container, false);
+    }
+
+    private void initRv() {
+        RecyclerView mRv = (RecyclerView) getActivity().findViewById(R.id.rv);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+
     }
 
     private UnreadPresenter getPresenter() {

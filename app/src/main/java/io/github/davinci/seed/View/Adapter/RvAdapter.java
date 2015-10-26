@@ -7,17 +7,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
 
+import io.github.davinci.seed.Model.Entity.CategoryWithFeeds;
 import io.github.davinci.seed.Model.Entity.Feed;
 import io.github.davinci.seed.R;
 
 /**
  * Created by davinci42 on 15/10/22.
  */
-public class TabRvAdapter extends RecyclerView.Adapter<TabRvAdapter.ViewHolder> {
+public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
 
-    private List<Feed> mFeedList;
+    private HashMap<String, CategoryWithFeeds> mHashMap;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -33,13 +35,13 @@ public class TabRvAdapter extends RecyclerView.Adapter<TabRvAdapter.ViewHolder> 
         }
     }
 
-    public TabRvAdapter(List<Feed> feedList) {
-        mFeedList = feedList;
+    public RvAdapter(HashMap<String, CategoryWithFeeds> feedList) {
+        mHashMap = feedList;
     }
 
 
     @Override
-    public TabRvAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RvAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feed, parent, false);
         return new ViewHolder(v);
@@ -48,7 +50,8 @@ public class TabRvAdapter extends RecyclerView.Adapter<TabRvAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return mFeedList.size();
+        // 最上方添加全部
+        return mHashMap.size() + 1;
     }
 
     @Override

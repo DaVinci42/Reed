@@ -18,16 +18,10 @@ import io.github.davinci.seed.R;
  */
 public class SavedForLaterFragment extends Fragment {
 
-    @Bind(R.id.rv)
-    RecyclerView mRv;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        ButterKnife.bind(getActivity());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
 
 
         return inflater.inflate(R.layout.widget_rv, container, false);

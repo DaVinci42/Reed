@@ -37,6 +37,7 @@ public class NetUtils {
             @Override
             public void onFailure(Request request, IOException e) {
                 seedNetCallback.onException(e);
+                Log.e("davinci42 NetUtils", String.valueOf(e));
             }
 
             @Override
@@ -65,6 +66,7 @@ public class NetUtils {
 
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("davinci42 NetUtils", String.valueOf(e));
         }
     }
 

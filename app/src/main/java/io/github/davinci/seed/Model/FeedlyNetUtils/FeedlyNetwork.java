@@ -2,13 +2,17 @@ package io.github.davinci.seed.Model.FeedlyNetUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import io.github.davinci.seed.Model.Entity.Category;
 import io.github.davinci.seed.Model.Entity.Entry;
 import io.github.davinci.seed.Model.Entity.Feed;
 import io.github.davinci.seed.Model.Entity.FeedlyData;
+import io.github.davinci.seed.Model.Entity.Subscription;
 import io.github.davinci.seed.Model.Entity.UnreadCount;
+import io.github.davinci.seed.Model.Entity.UnreadcountsEntity;
 import io.github.davinci.seed.Model.Utils.NetUtils;
 import io.github.davinci.seed.Model.Utils.SeedCallback;
 import io.github.davinci.seed.Model.Utils.SeedNetCallback;
@@ -24,6 +28,25 @@ public class FeedlyNetwork {
 
     String userId = SignHelper.getUserId();
 
+    public void updateCategoryFeedMap(final SeedCallback<Subscription> seedCallback) {
+
+        String href = rootUrl + "/v3/subscriptions";
+        mNetUtils.doGet(href, new SeedNetCallback() {
+            @Override
+            public void onSuccess(String httpResponse) {
+                List<Subscription> subscriptionList = new Gson().fromJson(httpResponse, new TypeToken<ArrayList<Subscription>>() {
+                }.getType());
+                seedCallback.onSuccess(subscriptionList);
+            }
+
+            @Override
+            public void onException(Exception e) {
+                seedCallback.onException(e);
+            }
+        });
+    }
+
+
     public void getCategoryList(final SeedCallback<Category> seedCallback) {
 
         String href = rootUrl + "/v3/categories";
@@ -31,7 +54,8 @@ public class FeedlyNetwork {
         mNetUtils.doGet(href, new SeedNetCallback() {
             @Override
             public void onSuccess(String response) {
-                List<Category> categoryList = new Gson().fromJson(response, new TypeToken<ArrayList<Category>>(){}.getType());
+                List<Category> categoryList = new Gson().fromJson(response, new TypeToken<ArrayList<Category>>() {
+                }.getType());
                 seedCallback.onSuccess(categoryList);
             }
 
@@ -48,7 +72,8 @@ public class FeedlyNetwork {
         mNetUtils.doGet(href, new SeedNetCallback() {
             @Override
             public void onSuccess(String httpResponse) {
-                List<Entry> entryList = new Gson().fromJson(httpResponse, new TypeToken<ArrayList<Entry>>(){}.getType());
+                List<Entry> entryList = new Gson().fromJson(httpResponse, new TypeToken<ArrayList<Entry>>() {
+                }.getType());
                 seedCallback.onSuccess(entryList);
             }
 
@@ -65,7 +90,8 @@ public class FeedlyNetwork {
         mNetUtils.doGet(href, new SeedNetCallback() {
             @Override
             public void onSuccess(String httpResponse) {
-                List<String> entryIdList = new Gson().fromJson(httpResponse, new TypeToken<ArrayList<String>>(){}.getType());
+                List<String> entryIdList = new Gson().fromJson(httpResponse, new TypeToken<ArrayList<String>>() {
+                }.getType());
                 getEntryListWithId(entryIdList, new SeedCallback<Entry>() {
                     @Override
                     public void onSuccess(List<Entry> feedlyDataList) {
@@ -107,7 +133,7 @@ public class FeedlyNetwork {
         });
     }
 
-    public void getUnreadFeed(final SeedCallback<UnreadCount> seedCallback) {
+    public void getUnreadFeed(final SeedCallback<UnreadcountsEntity> seedCallback) {
 
         String href = rootUrl + "/v3/markers/counts";
 
@@ -115,7 +141,7 @@ public class FeedlyNetwork {
             @Override
             public void onSuccess(String httpResponse) {
                 UnreadCount unreadCount = new Gson().fromJson(httpResponse, UnreadCount.class);
-
+                seedCallback.onSuccess(unreadCount.unreadcounts);
             }
 
             @Override
@@ -134,7 +160,8 @@ public class FeedlyNetwork {
         mNetUtils.doPost(href, postData, new SeedNetCallback() {
             @Override
             public void onSuccess(String httpResponse) {
-                List<Feed> feedList = new Gson().fromJson(httpResponse, new TypeToken<ArrayList<Feed>>(){}.getType());
+                List<Feed> feedList = new Gson().fromJson(httpResponse, new TypeToken<ArrayList<Feed>>() {
+                }.getType());
                 seedCallback.onSuccess(feedList);
             }
 
@@ -144,5 +171,6 @@ public class FeedlyNetwork {
             }
         });
     }
+
 
 }

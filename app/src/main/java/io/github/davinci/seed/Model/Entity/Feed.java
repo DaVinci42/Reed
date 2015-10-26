@@ -47,4 +47,6 @@ public class Feed extends FeedlyData {
     public String iconUrl;
     public boolean partial;
     public String visualUrl;
+
+    public int count;
 }
