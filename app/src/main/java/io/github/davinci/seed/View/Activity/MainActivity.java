@@ -51,6 +51,10 @@ public class MainActivity extends FragmentActivity implements MainView{
     @Override
     public void updateCategoryMap(HashMap<String, CategoryWithFeeds> hashMap) {
         mHashMap = hashMap;
+
+        for (Map.Entry<String, CategoryWithFeeds> entry : mHashMap.entrySet()) {
+            Log.e("davinci42", "Category: " + entry.getKey() + "    contains" + entry.getValue().feedList.size());
+        }
     }
 
     private MainPresenter getPresenter() {
