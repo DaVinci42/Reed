@@ -1,6 +1,7 @@
 package io.github.davinci.seed.MvpBase;
 
 /**
+<<<<<<< HEAD
  * Created by davinci42 on 15/11/3.
  */
 public class MvpPresenter<V extends MvpView> implements CorePresenter<V> {

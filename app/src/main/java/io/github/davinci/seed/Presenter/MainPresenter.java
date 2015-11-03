@@ -55,9 +55,7 @@ public class MainPresenter extends MvpPresenter<MainView>{
                     }
                 }
 
-                for (Map.Entry<String, CategoryWithFeeds> entry : map.entrySet()) {
-                    Log.e("davinci42", "Category: " + entry.getKey() + "    contains" + entry.getValue().feedList.size());
-                }
+                Log.e("davinci42", "getView() == null?  " + String.valueOf(getView()==null));
 
                 Log.e("davinci42", "getView == null? " + String.valueOf(getView()==null));
                 if (getView() != null) {
