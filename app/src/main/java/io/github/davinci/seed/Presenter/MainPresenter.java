@@ -13,14 +13,14 @@ import io.github.davinci.seed.Model.Entity.Feed;
 import io.github.davinci.seed.Model.Entity.Subscription;
 import io.github.davinci.seed.Model.FeedlyNetUtils.FeedlyNetwork;
 import io.github.davinci.seed.Model.Utils.SeedCallback;
+import io.github.davinci.seed.MvpBase.MvpPresenter;
 import io.github.davinci.seed.View.ViewInterface.MainView;
 
 /**
  * Created by davinci42 on 15/10/26.
  */
-public class MainPresenter {
+public class MainPresenter extends MvpPresenter<MainView>{
 
-    private MainView mView;
     private FeedlyNetwork mFeedNetwork = new FeedlyNetwork();
 
     public void updateCategoryFeedMap() {
@@ -59,6 +59,7 @@ public class MainPresenter {
                     Log.e("davinci42", "Category: " + entry.getKey() + "    contains" + entry.getValue().feedList.size());
                 }
 
+                Log.e("davinci42", "getView == null? " + String.valueOf(getView()==null));
                 if (getView() != null) {
                     getView().updateCategoryMap(map);
                 }
@@ -72,7 +73,4 @@ public class MainPresenter {
         });
     }
 
-    private MainView getView() {
-        return mView;
-    }
 }

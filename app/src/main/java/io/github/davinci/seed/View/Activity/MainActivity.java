@@ -12,13 +12,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.github.davinci.seed.Model.Entity.CategoryWithFeeds;
+import io.github.davinci.seed.MvpBase.MvpActivity;
 import io.github.davinci.seed.Presenter.MainPresenter;
 import io.github.davinci.seed.R;
 import io.github.davinci.seed.View.Adapter.PagerAdapter;
 import io.github.davinci.seed.View.ViewInterface.MainView;
 
 
-public class MainActivity extends FragmentActivity implements MainView{
+public class MainActivity extends MvpActivity<MainView, MainPresenter> implements MainView{
 
     private HashMap<String, CategoryWithFeeds> mHashMap;
 
@@ -47,13 +48,14 @@ public class MainActivity extends FragmentActivity implements MainView{
     }
 
 
-
     @Override
     public void updateCategoryMap(HashMap<String, CategoryWithFeeds> hashMap) {
         mHashMap = hashMap;
     }
 
-    private MainPresenter getPresenter() {
+
+    @Override
+    protected MainPresenter createPresenter() {
         return new MainPresenter();
     }
 }

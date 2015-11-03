@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MvpBase.MvpActivity"
+            android:name=".MvpBase.CoreActivity"
             android:label="@string/title_activity_mvp"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
