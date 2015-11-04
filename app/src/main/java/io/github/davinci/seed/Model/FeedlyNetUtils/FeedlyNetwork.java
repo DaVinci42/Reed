@@ -1,5 +1,7 @@
 package io.github.davinci.seed.Model.FeedlyNetUtils;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -30,10 +32,11 @@ public class FeedlyNetwork {
 
     public void updateCategoryFeedMap(final SeedCallback<Subscription> seedCallback) {
 
-        String href = rootUrl + "/v3/subscriptions";
+        final String href = rootUrl + "/v3/subscriptions";
         mNetUtils.doGet(href, new SeedNetCallback() {
             @Override
             public void onSuccess(String httpResponse) {
+
                 List<Subscription> subscriptionList = new Gson().fromJson(httpResponse, new TypeToken<ArrayList<Subscription>>() {
                 }.getType());
                 seedCallback.onSuccess(subscriptionList);

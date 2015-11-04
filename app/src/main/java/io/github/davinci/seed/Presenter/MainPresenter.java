@@ -1,12 +1,7 @@
 package io.github.davinci.seed.Presenter;
 
-
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import io.github.davinci.seed.Model.Entity.Category;
 import io.github.davinci.seed.Model.Entity.CategoryWithFeeds;
 import io.github.davinci.seed.Model.Entity.Feed;
@@ -28,24 +23,43 @@ public class MainPresenter extends MvpPresenter<MainView>{
         mFeedNetwork.updateCategoryFeedMap(new SeedCallback<Subscription>() {
             @Override
             public void onSuccess(List<Subscription> feedlyDataList) {
+
                 HashMap<String, CategoryWithFeeds> map = new HashMap<>();
-                map.put("Other", new CategoryWithFeeds());
+
+                map.put("Others", new CategoryWithFeeds());
 
                 for (Subscription subs : feedlyDataList) {
 
                     if (!subs.categories.isEmpty()) {
+
                         Feed feed = new Feed();
+
                         for (Category category : subs.categories) {
-                            if (!map.containsKey(category.label)) {
-                                map.put(category.id, new CategoryWithFeeds());
+
+                            if (!map.containsKey(category.id)) {
+
+                                CategoryWithFeeds categoryWithFeeds = new CategoryWithFeeds();
+                                categoryWithFeeds.id = category.id;
+                                categoryWithFeeds.label = category.label;
+
+                                feed.id = subs.id;
+                                feed.title = subs.title;
+                                feed.website = subs.website;
+                                categoryWithFeeds.feedList.add(feed);
+
+                                map.put(category.id, categoryWithFeeds);
+
                             } else {
+
                                 feed.id = subs.id;
                                 feed.title = subs.title;
                                 feed.website = subs.website;
                                 map.get(category.id).feedList.add(feed);
                             }
                         }
+
                     } else {
+
                         // Feed without category, put them in a new category called Others
                         Feed feed = new Feed();
                         feed.id = subs.id;
@@ -55,9 +69,6 @@ public class MainPresenter extends MvpPresenter<MainView>{
                     }
                 }
 
-                Log.e("davinci42", "getView() == null?  " + String.valueOf(getView()==null));
-
-                Log.e("davinci42", "getView == null? " + String.valueOf(getView()==null));
                 if (getView() != null) {
                     getView().updateCategoryMap(map);
                 }

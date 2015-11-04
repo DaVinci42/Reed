@@ -11,13 +11,14 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import io.github.davinci.seed.Model.Entity.Feed;
+import io.github.davinci.seed.MvpBase.MvpFragment;
 import io.github.davinci.seed.Presenter.UnreadPresenter;
 import io.github.davinci.seed.R;
 import io.github.davinci.seed.View.Adapter.PagerAdapter;
 import io.github.davinci.seed.View.ViewInterface.UnreadView;
 
 
-public class UnreadFragment extends Fragment implements UnreadView{
+public class UnreadFragment extends MvpFragment<UnreadView, UnreadPresenter> implements UnreadView{
 
     private RecyclerView mRv;
 
@@ -32,13 +33,10 @@ public class UnreadFragment extends Fragment implements UnreadView{
     private void initRv() {
         RecyclerView mRv = (RecyclerView) getActivity().findViewById(R.id.rv);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-
-
     }
 
-    private UnreadPresenter getPresenter() {
+    @Override
+    protected UnreadPresenter createPresenter() {
         return new UnreadPresenter();
     }
-
-
 }

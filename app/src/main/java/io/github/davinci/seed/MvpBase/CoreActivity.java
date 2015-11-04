@@ -2,8 +2,9 @@ package io.github.davinci.seed.MvpBase;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 
-public abstract class CoreActivity<V extends CoreView, P extends CorePresenter<V>> extends FragmentActivity implements CoreView {
+public abstract class CoreActivity<V extends CoreView, P extends CorePresenter<V>> extends AppCompatActivity implements CoreView {
 
     protected P mPresenter;
 

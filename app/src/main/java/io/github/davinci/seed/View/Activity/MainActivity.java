@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.github.davinci.seed.Model.Entity.CategoryWithFeeds;
+import io.github.davinci.seed.Model.Entity.Feed;
 import io.github.davinci.seed.MvpBase.MvpActivity;
 import io.github.davinci.seed.Presenter.MainPresenter;
 import io.github.davinci.seed.R;
@@ -53,7 +54,10 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
         mHashMap = hashMap;
 
         for (Map.Entry<String, CategoryWithFeeds> entry : mHashMap.entrySet()) {
-            Log.e("davinci42", "Category: " + entry.getKey() + "    contains" + entry.getValue().feedList.size());
+
+            for (Feed feed : entry.getValue().feedList) {
+                Log.e("davinci42", "Feed Title " + entry.getValue().label + "  " + feed.title);
+            }
         }
     }
 

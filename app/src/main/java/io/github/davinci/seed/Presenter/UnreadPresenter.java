@@ -11,18 +11,19 @@ import io.github.davinci.seed.Model.Entity.UnreadCount;
 import io.github.davinci.seed.Model.Entity.UnreadcountsEntity;
 import io.github.davinci.seed.Model.FeedlyNetUtils.FeedlyNetwork;
 import io.github.davinci.seed.Model.Utils.SeedCallback;
+import io.github.davinci.seed.MvpBase.MvpPresenter;
 import io.github.davinci.seed.View.ViewInterface.UnreadView;
 
 /**
  * Created by davinci42 on 15/10/22.
  */
-public class UnreadPresenter {
+public class UnreadPresenter extends MvpPresenter<UnreadView>{
 
     private UnreadView mView;
 
     private FeedlyNetwork mFeedNetWork = new FeedlyNetwork();
 
-    private UnreadView getView() {
+    public UnreadView getView() {
         return mView;
     }
 
