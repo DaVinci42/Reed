@@ -50,8 +50,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        // 最上方添加全部
-        return mHashMap.size() + 1;
+        return mHashMap.size();
     }
 
     @Override

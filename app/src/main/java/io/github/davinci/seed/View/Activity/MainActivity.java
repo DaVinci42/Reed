@@ -52,13 +52,6 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     @Override
     public void updateCategoryMap(HashMap<String, CategoryWithFeeds> hashMap) {
         mHashMap = hashMap;
-
-        for (Map.Entry<String, CategoryWithFeeds> entry : mHashMap.entrySet()) {
-
-            for (Feed feed : entry.getValue().feedList) {
-                Log.e("davinci42", "Feed Title " + entry.getValue().label + "  " + feed.title);
-            }
-        }
     }
 
 

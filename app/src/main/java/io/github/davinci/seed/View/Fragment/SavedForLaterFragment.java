@@ -3,23 +3,21 @@ package io.github.davinci.seed.View.Fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import io.github.davinci.seed.MvpBase.MvpFragment;
-import io.github.davinci.seed.Presenter.SavedForLaterPresenter;
+import io.github.davinci.seed.MvpBase.MvpView;
+import io.github.davinci.seed.Presenter.TabListPresenter;
 import io.github.davinci.seed.R;
-import io.github.davinci.seed.View.ViewInterface.SavedForLaterView;
+import io.github.davinci.seed.View.ViewInterface.TabListView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SavedForLaterFragment extends MvpFragment<SavedForLaterView, SavedForLaterPresenter> implements SavedForLaterView {
+public class SavedForLaterFragment extends MvpFragment<TabListView, TabListPresenter> implements TabListView {
 
 
     @Override
@@ -31,7 +29,7 @@ public class SavedForLaterFragment extends MvpFragment<SavedForLaterView, SavedF
     }
 
     @Override
-    protected SavedForLaterPresenter createPresenter() {
-        return new SavedForLaterPresenter();
+    protected TabListPresenter createPresenter() {
+        return new TabListPresenter();
     }
 }
