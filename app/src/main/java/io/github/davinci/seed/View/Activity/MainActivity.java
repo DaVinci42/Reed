@@ -20,7 +20,7 @@ import io.github.davinci.seed.View.Adapter.PagerAdapter;
 import io.github.davinci.seed.View.ViewInterface.MainView;
 
 
-public class MainActivity extends MvpActivity<MainView, MainPresenter> implements MainView{
+public class MainActivity extends MvpActivity<MainView, MainPresenter> implements MainView {
 
     private HashMap<String, CategoryWithFeeds> mHashMap;
 
@@ -45,6 +45,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
         tabLayout.addTab(tabLayout.newTab().setText("Unread"));
         tabLayout.addTab(tabLayout.newTab().setText("RecentlyRead"));
         tabLayout.addTab(tabLayout.newTab().setText("SavedForLater"));
+        tabLayout.setupWithViewPager(viewPager);
 
     }
 

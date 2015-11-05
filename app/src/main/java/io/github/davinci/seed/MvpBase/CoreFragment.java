@@ -19,7 +19,7 @@ public abstract class CoreFragment<V extends CoreView, P extends CorePresenter<V
         }
 
         if (mPresenter == null) {
-            throw new NullPointerException("presenter must not be null in " + this.getClass().getName());
+            throw new NullPointerException("Presenter must not be null in " + this.getClass().getName());
         }
 
         mPresenter.attachView((V) this);

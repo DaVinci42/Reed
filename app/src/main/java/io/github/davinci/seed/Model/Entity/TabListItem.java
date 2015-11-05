@@ -10,4 +10,5 @@ public class TabListItem {
     public int count;
     public long updated;
     public int iconUrl;
+    public String type;
 }

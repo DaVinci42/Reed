@@ -37,7 +37,7 @@ public class NetUtils {
             @Override
             public void onFailure(Request request, IOException e) {
                 seedNetCallback.onException(e);
-                Log.e("davinci42 NetUtils", String.valueOf(e));
+                Log.e("davinci42 NetUtils: ", String.valueOf(e));
             }
 
             @Override
@@ -61,12 +61,12 @@ public class NetUtils {
             if (response.isSuccessful()) {
                 seedNetCallback.onSuccess(response.body().string());
             } else {
-                Log.e("NetErr", response.body().string());
+                Log.e("davinci42 NetErr: ", response.body().string());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("davinci42 NetUtils", String.valueOf(e));
+            Log.e("davinci42 NetUtils: ", String.valueOf(e));
         }
     }
 

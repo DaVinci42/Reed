@@ -61,7 +61,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mFeedTitle.setText(mTabItemList.get(position).title);
         holder.mUnreadCount.setText(mTabItemList.get(position).count);
-        holder.mRootLayout.setTag(mTabItemList.get(position));
+        holder.mRootLayout.setTag(mTabItemList.get(position).type);
         holder.mRootLayout.setOnClickListener(mOnFeedListClickListener);
     }
 }

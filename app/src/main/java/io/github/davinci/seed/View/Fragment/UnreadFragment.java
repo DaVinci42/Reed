@@ -4,6 +4,7 @@ package io.github.davinci.seed.View.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,26 +36,27 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
     private List<TabListItem> mTabItemList = new ArrayList<>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        getPresenter().getUnreadFeedList();
-        initRv();
-        ButterKnife.bind(getActivity());
-        return inflater.inflate(R.layout.widget_rv, container, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+//        initRv();
     }
 
     private void initRv() {
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRv.setLayoutManager(mLayoutManager);
-        mRvAdapter = new RvAdapter(mTabItemList);
+        mRvAdapter = new RvAdapter(mTabItemList, mOnFeedListClickListener);
         mRv.setAdapter(mRvAdapter);
+
+        Log.e("davinci42", "getUnreadList");
+        getPresenter().getUnreadFeedList();
     }
 
     @Override
     public void updateCategoryMap(List dataList) {
 
         HashMap<String, CategoryWithFeeds> mHashMap = new HashMap<>();
+        mTabItemList.clear();
 
         for (UnreadCountsEntity entity : (List<UnreadCountsEntity>) dataList) {
 
@@ -66,6 +68,7 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
                 tabListItem.count = entity.count;
                 tabListItem.title = "All";
                 tabListItem.updated = entity.updated;
+                tabListItem.type = "all";
                 mTabItemList.add(tabListItem);
 
             } else if (entity.id.startsWith("user/") && entity.id.contains("/category/")) {
@@ -82,25 +85,40 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
                 tabListItem.count = entity.count;
                 tabListItem.title = mHashMap.get(entity.id).label;
                 tabListItem.updated = entity.updated;
+                tabListItem.type = "category";
 
                 mTabItemList.add(tabListItem);
-
             }
         }
 
         mRvAdapter.notifyDataSetChanged();
+        Log.e("davinci42", "mTabList size: " + mTabItemList.size());
     }
 
 
     public OnFeedListClickListener mOnFeedListClickListener = new OnFeedListClickListener() {
         @Override
         public void onClick(View v) {
+            String itemType = (String) v.getTag();
 
+            switch (itemType) {
+                case "all":
+                    break;
+                case "category":
+                    break;
+                case "feed":
+                    break;
+            }
         }
     };
 
     @Override
     protected TabListPresenter createPresenter() {
         return new TabListPresenter();
+    }
+
+    @Override
+    public int getLayoutResId() {
+        return R.layout.view_main_activity;
     }
 }

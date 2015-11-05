@@ -22,20 +22,24 @@ import io.github.davinci.seed.View.ViewInterface.TabListView;
 public class RecentlyReadFragment extends MvpFragment<TabListView, TabListPresenter> implements TabListView {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
+
 
     @Override
     protected TabListPresenter createPresenter() {
         return new TabListPresenter();
     }
 
+
     @Override
     public void updateCategoryMap(List dataList) {
 
+    }
+
+    @Override
+    public int getLayoutResId() {
+        return R.layout.view_main_activity;
     }
 }
