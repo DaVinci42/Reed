@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 import io.github.davinci.seed.MvpBase.MvpFragment;
 import io.github.davinci.seed.Presenter.TabListPresenter;
 import io.github.davinci.seed.R;
@@ -30,5 +32,10 @@ public class RecentlyReadFragment extends MvpFragment<TabListView, TabListPresen
     @Override
     protected TabListPresenter createPresenter() {
         return new TabListPresenter();
+    }
+
+    @Override
+    public void updateCategoryMap(List dataList) {
+
     }
 }

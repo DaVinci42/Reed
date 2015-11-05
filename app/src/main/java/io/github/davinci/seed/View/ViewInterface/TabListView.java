@@ -1,8 +1,7 @@
 package io.github.davinci.seed.View.ViewInterface;
 
-import java.util.ArrayList;
-import java.util.List;
 
+import java.util.List;
 import io.github.davinci.seed.Model.Entity.FeedlyData;
 import io.github.davinci.seed.MvpBase.MvpView;
 

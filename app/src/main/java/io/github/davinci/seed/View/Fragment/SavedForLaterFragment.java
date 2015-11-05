@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import io.github.davinci.seed.MvpBase.MvpFragment;
 import io.github.davinci.seed.MvpBase.MvpView;
 import io.github.davinci.seed.Presenter.TabListPresenter;
@@ -31,5 +33,10 @@ public class SavedForLaterFragment extends MvpFragment<TabListView, TabListPrese
     @Override
     protected TabListPresenter createPresenter() {
         return new TabListPresenter();
+    }
+
+    @Override
+    public void updateCategoryMap(List dataList) {
+
     }
 }
