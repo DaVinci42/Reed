@@ -49,4 +49,5 @@ public class Feed extends FeedlyData {
     public String visualUrl;
 
     public int count;
+    public long updated;
 }

@@ -27,12 +27,19 @@ public class MainPresenter extends MvpPresenter<MainView>{
                 HashMap<String, CategoryWithFeeds> map = new HashMap<>();
 
                 map.put("Others", new CategoryWithFeeds());
+                map.put("All", new CategoryWithFeeds());
 
                 for (Subscription subs : feedlyDataList) {
 
                     if (!subs.categories.isEmpty()) {
 
                         Feed feed = new Feed();
+
+                        feed.id = subs.id;
+                        feed.title = subs.title;
+                        feed.website = subs.website;
+
+                        map.get("All").feedList.add(feed);
 
                         for (Category category : subs.categories) {
 
@@ -41,19 +48,11 @@ public class MainPresenter extends MvpPresenter<MainView>{
                                 CategoryWithFeeds categoryWithFeeds = new CategoryWithFeeds();
                                 categoryWithFeeds.id = category.id;
                                 categoryWithFeeds.label = category.label;
-
-                                feed.id = subs.id;
-                                feed.title = subs.title;
-                                feed.website = subs.website;
                                 categoryWithFeeds.feedList.add(feed);
 
                                 map.put(category.id, categoryWithFeeds);
 
                             } else {
-
-                                feed.id = subs.id;
-                                feed.title = subs.title;
-                                feed.website = subs.website;
                                 map.get(category.id).feedList.add(feed);
                             }
                         }

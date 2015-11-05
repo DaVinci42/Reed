@@ -13,6 +13,6 @@ public class UnreadCount extends FeedlyData {
      */
 
     public long updated;
-    public List<UnreadcountsEntity> unreadcounts;
+    public List<UnreadCountsEntity> unreadcounts;
 
 }

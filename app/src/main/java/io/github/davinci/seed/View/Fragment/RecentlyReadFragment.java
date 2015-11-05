@@ -9,17 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import io.github.davinci.seed.MvpBase.CoreFragment;
 import io.github.davinci.seed.MvpBase.MvpFragment;
-import io.github.davinci.seed.MvpBase.MvpPresenter;
-import io.github.davinci.seed.Presenter.RecentlyReadPresenter;
+import io.github.davinci.seed.Presenter.TabListPresenter;
 import io.github.davinci.seed.R;
-import io.github.davinci.seed.View.ViewInterface.RecentlyReadView;
+import io.github.davinci.seed.View.ViewInterface.TabListView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecentlyReadFragment extends MvpFragment<RecentlyReadView, RecentlyReadPresenter> implements RecentlyReadView {
+public class RecentlyReadFragment extends MvpFragment<TabListView, TabListPresenter> implements TabListView {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,7 +28,7 @@ public class RecentlyReadFragment extends MvpFragment<RecentlyReadView, Recently
     }
 
     @Override
-    protected RecentlyReadPresenter createPresenter() {
-        return new RecentlyReadPresenter();
+    protected TabListPresenter createPresenter() {
+        return new TabListPresenter();
     }
 }

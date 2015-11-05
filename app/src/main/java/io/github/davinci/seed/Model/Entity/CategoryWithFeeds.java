@@ -10,5 +10,6 @@ public class CategoryWithFeeds extends FeedlyData{
     public String label;
     public String id;
     public int count;
+    public long updated;
     public ArrayList<Feed> feedList = new ArrayList<>();
 }

@@ -1,7 +1,5 @@
 package io.github.davinci.seed.Model.FeedlyNetUtils;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -11,10 +9,9 @@ import java.util.List;
 import io.github.davinci.seed.Model.Entity.Category;
 import io.github.davinci.seed.Model.Entity.Entry;
 import io.github.davinci.seed.Model.Entity.Feed;
-import io.github.davinci.seed.Model.Entity.FeedlyData;
 import io.github.davinci.seed.Model.Entity.Subscription;
 import io.github.davinci.seed.Model.Entity.UnreadCount;
-import io.github.davinci.seed.Model.Entity.UnreadcountsEntity;
+import io.github.davinci.seed.Model.Entity.UnreadCountsEntity;
 import io.github.davinci.seed.Model.Utils.NetUtils;
 import io.github.davinci.seed.Model.Utils.SeedCallback;
 import io.github.davinci.seed.Model.Utils.SeedNetCallback;
@@ -136,7 +133,7 @@ public class FeedlyNetwork {
         });
     }
 
-    public void getUnreadFeed(final SeedCallback<UnreadcountsEntity> seedCallback) {
+    public void getUnreadFeed(final SeedCallback<UnreadCountsEntity> seedCallback) {
 
         String href = rootUrl + "/v3/markers/counts";
 
