@@ -119,6 +119,6 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
 
     @Override
     public int getLayoutResId() {
-        return R.layout.view_main_activity;
+        return R.layout.view_fragment;
     }
 }

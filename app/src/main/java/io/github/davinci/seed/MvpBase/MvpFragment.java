@@ -15,7 +15,7 @@ public abstract class MvpFragment<V extends CoreView, P extends CorePresenter<V>
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(getActivity());
+        ButterKnife.bind(this, mView);
     }
 
     @Nullable
