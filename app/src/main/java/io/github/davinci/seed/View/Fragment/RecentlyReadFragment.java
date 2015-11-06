@@ -40,6 +40,6 @@ public class RecentlyReadFragment extends MvpFragment<TabListView, TabListPresen
 
     @Override
     public int getLayoutResId() {
-        return R.layout.view_main_activity;
+        return R.layout.item_tab;
     }
 }

@@ -34,11 +34,13 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
 
     private RvAdapter mRvAdapter;
     private List<TabListItem> mTabItemList = new ArrayList<>();
+    private HashMap<String, CategoryWithFeeds> mHashMap = new HashMap<>();
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        initRv();
+        Log.e("davinci42", "onViewCreated");
+        initRv();
     }
 
     private void initRv() {
@@ -55,7 +57,7 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
     @Override
     public void updateCategoryMap(List dataList) {
 
-        HashMap<String, CategoryWithFeeds> mHashMap = new HashMap<>();
+
         mTabItemList.clear();
 
         for (UnreadCountsEntity entity : (List<UnreadCountsEntity>) dataList) {
@@ -119,6 +121,6 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
 
     @Override
     public int getLayoutResId() {
-        return R.layout.view_main_activity;
+        return R.layout.widget_rv;
     }
 }

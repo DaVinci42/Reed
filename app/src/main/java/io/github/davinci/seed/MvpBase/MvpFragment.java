@@ -15,7 +15,7 @@ public abstract class MvpFragment<V extends CoreView, P extends CorePresenter<V>
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(getActivity());
+        ButterKnife.bind(this, getView());
     }
 
     @Nullable
@@ -24,7 +24,7 @@ public abstract class MvpFragment<V extends CoreView, P extends CorePresenter<V>
         if (mView != null) {
             return mView;
         } else {
-            mView = View.inflate(getActivity(), getLayoutResId(), container);
+            mView = inflater.inflate(getLayoutResId(), container, false);
         }
         return super.onCreateView(inflater, container, savedInstanceState);
 

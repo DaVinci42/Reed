@@ -15,12 +15,10 @@ import io.github.davinci.seed.Presenter.TabListPresenter;
 import io.github.davinci.seed.R;
 import io.github.davinci.seed.View.ViewInterface.TabListView;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SavedForLaterFragment extends MvpFragment<TabListView, TabListPresenter> implements TabListView {
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -41,6 +39,6 @@ public class SavedForLaterFragment extends MvpFragment<TabListView, TabListPrese
 
     @Override
     public int getLayoutResId() {
-        return R.layout.view_main_activity;
+        return R.layout.item_tab;
     }
 }
