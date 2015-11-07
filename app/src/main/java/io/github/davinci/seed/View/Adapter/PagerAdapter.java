@@ -13,21 +13,22 @@ import io.github.davinci.seed.View.Fragment.UnreadFragment;
  */
 public class PagerAdapter extends FragmentStatePagerAdapter{
 
-    Fragment[] fragments = {new UnreadFragment(), new RecentlyReadFragment(), new SavedForLaterFragment()};
+    private FragmentManager mFm;
 
     public PagerAdapter(FragmentManager fm) {
         super(fm);
+        mFm = fm;
     }
 
 
     @Override
     public Fragment getItem(int position) {
-        return fragments[position];
+        return mFm.getFragments().get(position);
     }
 
 
     @Override
     public int getCount() {
-        return fragments.length;
+        return mFm.getFragments().size();
     }
 }

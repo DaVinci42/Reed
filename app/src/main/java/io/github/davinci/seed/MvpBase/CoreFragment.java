@@ -30,6 +30,10 @@ public abstract class CoreFragment<V extends CoreView, P extends CorePresenter<V
     public void onDestroyView() {
         super.onDestroyView();
         // TODO 此处容易产生bug，不用用setRetainInstance(true)
+
+        if (mPresenter == null) {
+            mPresenter = createPresenter();
+        }
         mPresenter.detachView(getRetainInstance());
     }
 
