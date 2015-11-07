@@ -10,4 +10,5 @@ import io.github.davinci.seed.MvpBase.MvpView;
  */
 public interface MainView extends MvpView{
     void updateCategoryMap(HashMap<String, CategoryWithFeeds> hashMap);
+    void onEmptyToken();
 }

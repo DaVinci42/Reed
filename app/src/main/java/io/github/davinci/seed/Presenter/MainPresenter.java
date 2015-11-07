@@ -1,12 +1,18 @@
 package io.github.davinci.seed.Presenter;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 import java.util.List;
 import io.github.davinci.seed.Model.Entity.Category;
 import io.github.davinci.seed.Model.Entity.CategoryWithFeeds;
 import io.github.davinci.seed.Model.Entity.Feed;
+import io.github.davinci.seed.Model.Entity.FeedlyData;
 import io.github.davinci.seed.Model.Entity.Subscription;
 import io.github.davinci.seed.Model.FeedlyNetUtils.FeedlyNetwork;
+import io.github.davinci.seed.Model.FeedlyNetUtils.SignHelper;
 import io.github.davinci.seed.Model.Utils.SeedCallback;
 import io.github.davinci.seed.MvpBase.MvpPresenter;
 import io.github.davinci.seed.View.ViewInterface.MainView;
@@ -20,65 +26,84 @@ public class MainPresenter extends MvpPresenter<MainView>{
 
     public void updateCategoryFeedMap() {
 
-        mFeedNetwork.updateCategoryFeedMap(new SeedCallback<Subscription>() {
-            @Override
-            public void onSuccess(List<Subscription> feedlyDataList) {
+        if (SignHelper.ifIdAndTokenReady()) {
 
-                HashMap<String, CategoryWithFeeds> map = new HashMap<>();
+            Log.e("davinci42", "Id && Token Got!");
 
-                map.put("Others", new CategoryWithFeeds());
-                map.put("All", new CategoryWithFeeds());
+            mFeedNetwork.updateCategoryFeedMap(new SeedCallback<Subscription>() {
+                @Override
+                public void onSuccess(List<Subscription> feedlyDataList) {
 
-                for (Subscription subs : feedlyDataList) {
+                    HashMap<String, CategoryWithFeeds> map = new HashMap<>();
 
-                    if (!subs.categories.isEmpty()) {
+                    CategoryWithFeeds categoryAll =  new CategoryWithFeeds();
+                    categoryAll.id = FeedlyData.ALL_CATEGORY_ID;
+                    categoryAll.label = FeedlyData.ALL_CATEGORY_LABEL;
+                    map.put(categoryAll.id, categoryAll);
 
-                        Feed feed = new Feed();
+                    CategoryWithFeeds uncategorized =  new CategoryWithFeeds();
+                    uncategorized.id = FeedlyData.UNCATEGORIZED_ID;
+                    uncategorized.label = FeedlyData.UNCATEGORIZED_LABEL;
+                    map.put(uncategorized.id, uncategorized);
 
-                        feed.id = subs.id;
-                        feed.title = subs.title;
-                        feed.website = subs.website;
+                    for (Subscription subs : feedlyDataList) {
 
-                        map.get("All").feedList.add(feed);
+                        if (!subs.categories.isEmpty()) {
 
-                        for (Category category : subs.categories) {
+                            Feed feed = new Feed();
 
-                            if (!map.containsKey(category.id)) {
+                            feed.id = subs.id;
+                            feed.title = subs.title;
+                            feed.website = subs.website;
 
-                                CategoryWithFeeds categoryWithFeeds = new CategoryWithFeeds();
-                                categoryWithFeeds.id = category.id;
-                                categoryWithFeeds.label = category.label;
-                                categoryWithFeeds.feedList.add(feed);
+                            map.get(categoryAll.id).count += feed.count;
+                            map.get(categoryAll.id).feedList.add(feed);
 
-                                map.put(category.id, categoryWithFeeds);
+                            for (Category category : subs.categories) {
 
-                            } else {
-                                map.get(category.id).feedList.add(feed);
+                                if (!map.containsKey(category.id)) {
+
+                                    CategoryWithFeeds categoryWithFeeds = new CategoryWithFeeds();
+                                    categoryWithFeeds.id = category.id;
+                                    categoryWithFeeds.label = category.label;
+                                    categoryWithFeeds.feedList.add(feed);
+
+                                    map.put(category.id, categoryWithFeeds);
+
+                                } else {
+                                    map.get(category.id).feedList.add(feed);
+                                }
                             }
+
+                        } else {
+
+                            // Feed without category, put them in a new category called uncategorized
+                            Feed feed = new Feed();
+                            feed.id = subs.id;
+                            feed.title = subs.title;
+                            feed.website = subs.website;
+
+                            map.get(uncategorized.id).count += feed.count;
+                            map.get(uncategorized.id).feedList.add(feed);
                         }
+                    }
 
-                    } else {
-
-                        // Feed without category, put them in a new category called Others
-                        Feed feed = new Feed();
-                        feed.id = subs.id;
-                        feed.title = subs.title;
-                        feed.website = subs.website;
-                        map.get("Others").feedList.add(feed);
+                    if (getView() != null) {
+                        getView().updateCategoryMap(map);
                     }
                 }
 
-                if (getView() != null) {
-                    getView().updateCategoryMap(map);
+                @Override
+                public void onException(Exception e) {
+
                 }
+            });
 
-            }
+        } else {
+            getView().onEmptyToken();
+        }
 
-            @Override
-            public void onException(Exception e) {
 
-            }
-        });
     }
 
 }

@@ -10,5 +10,11 @@ public class TabListItem {
     public int count;
     public long updated;
     public int iconUrl;
+
     public String type;
+
+    public static final String TYPE_ALL = "All";
+    public static final String TYPE_FEED = "Feed";
+    public static final String TYPE_CATEGORY = "Category";
+
 }

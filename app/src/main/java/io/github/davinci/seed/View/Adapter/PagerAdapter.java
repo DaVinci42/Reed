@@ -4,6 +4,9 @@ package io.github.davinci.seed.View.Adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import java.util.List;
+
 import io.github.davinci.seed.View.Fragment.RecentlyReadFragment;
 import io.github.davinci.seed.View.Fragment.SavedForLaterFragment;
 import io.github.davinci.seed.View.Fragment.UnreadFragment;
@@ -13,22 +16,22 @@ import io.github.davinci.seed.View.Fragment.UnreadFragment;
  */
 public class PagerAdapter extends FragmentStatePagerAdapter{
 
-    private FragmentManager mFm;
+    private List<Fragment> mFragmentList;
 
-    public PagerAdapter(FragmentManager fm) {
+    public PagerAdapter(FragmentManager fm, List<Fragment> fragmentList) {
         super(fm);
-        mFm = fm;
+        mFragmentList = fragmentList;
     }
 
 
     @Override
     public Fragment getItem(int position) {
-        return mFm.getFragments().get(position);
+        return mFragmentList.get(position);
     }
 
 
     @Override
     public int getCount() {
-        return mFm.getFragments().size();
+        return mFragmentList.size();
     }
 }

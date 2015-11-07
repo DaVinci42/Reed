@@ -2,14 +2,19 @@ package io.github.davinci.seed.View.Activity;
 
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Window;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.github.davinci.seed.Model.Entity.CategoryWithFeeds;
@@ -35,27 +40,25 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
         setContentView(R.layout.view_main_activity);
 
         getPresenter().updateCategoryFeedMap();
-
-        initTabs();
     }
 
     private void initTabs() {
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        FragmentManager mFm = getSupportFragmentManager();
+        List<Fragment> fragmentList = new ArrayList<>();
+        fragmentList.add(new UnreadFragment());
+        fragmentList.add(new RecentlyReadFragment());
+        fragmentList.add(new SavedForLaterFragment());
 
-        mFm.beginTransaction().add(R.id.viewpager, new UnreadFragment()).commit();
-        mFm.beginTransaction().add(R.id.viewpager, new RecentlyReadFragment()).commit();
-        mFm.beginTransaction().add(R.id.viewpager, new SavedForLaterFragment()).commit();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("FeedMap", mHashMap);
 
-        Log.e("davinci42", "getFragments() is null? " + String.valueOf(mFm.getFragments() == null));
+        for (Fragment fragment : fragmentList) {
+            fragment.setArguments(bundle);
+        }
 
-
-
-        Log.e("davinci42", "Fragments num: " + mFm.getFragments().size());
-
-        PagerAdapter viewPagerAdapter = new PagerAdapter(mFm);
+        PagerAdapter viewPagerAdapter = new PagerAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(viewPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab);
@@ -72,6 +75,14 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     @Override
     public void updateCategoryMap(HashMap<String, CategoryWithFeeds> hashMap) {
         mHashMap = hashMap;
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                initTabs();
+            }
+        });
+
     }
 
 
@@ -79,4 +90,11 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     protected MainPresenter createPresenter() {
         return new MainPresenter();
     }
+
+    @Override
+    public void onEmptyToken() {
+        Toast.makeText(MainActivity.this, "Empty UserId & Token in SignHelper", Toast.LENGTH_LONG).show();
+
+    }
+
 }

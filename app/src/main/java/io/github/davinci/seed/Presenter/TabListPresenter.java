@@ -1,5 +1,7 @@
 package io.github.davinci.seed.Presenter;
 
+import android.util.Log;
+
 import java.util.List;
 
 import io.github.davinci.seed.Model.Entity.UnreadCountsEntity;
@@ -21,6 +23,7 @@ public class TabListPresenter extends MvpPresenter<TabListView> {
             @Override
             public void onSuccess(List<UnreadCountsEntity> feedlyDataList) {
 
+                Log.e("davinci42", "unreadFeedListGot");
                 getView().updateCategoryMap(feedlyDataList);
             }
 

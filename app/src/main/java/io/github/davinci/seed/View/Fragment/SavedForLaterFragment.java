@@ -39,10 +39,8 @@ public class SavedForLaterFragment extends MvpFragment<TabListView, TabListPrese
 
     @Override
     public int getLayoutResId() {
-<<<<<<< HEAD
+
         return R.layout.view_fragment;
-=======
-        return R.layout.item_tab;
->>>>>>> 0e1ccd5ca9b54efa410a908650c9c840afc9d883
+
     }
 }

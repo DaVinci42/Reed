@@ -10,7 +10,13 @@ public class SignHelper {
     public static String getUserId() {
         return "";    }
 
+
     public static String getToken() {
         return "";    }
 
+
+    public static boolean ifIdAndTokenReady() {
+
+        return (!getToken().isEmpty() && !getUserId().isEmpty());
+    }
 }

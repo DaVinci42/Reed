@@ -9,14 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import io.github.davinci.seed.Model.Entity.CategoryWithFeeds;
 import io.github.davinci.seed.Model.Entity.Feed;
+import io.github.davinci.seed.Model.Entity.FeedlyData;
 import io.github.davinci.seed.Model.Entity.TabListItem;
 import io.github.davinci.seed.Model.Entity.UnreadCountsEntity;
 import io.github.davinci.seed.MvpBase.MvpFragment;
@@ -29,8 +31,8 @@ import io.github.davinci.seed.View.ViewInterface.TabListView;
 
 public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> implements TabListView {
 
-    @Bind(R.id.rv)
-    RecyclerView mRv;
+
+    private RecyclerView mRv;
 
     private RvAdapter mRvAdapter;
     private List<TabListItem> mTabItemList = new ArrayList<>();
@@ -39,12 +41,13 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.e("davinci42", "onViewCreated");
+        mHashMap = (HashMap<String, CategoryWithFeeds>) this.getArguments().getSerializable("FeedMap");
+
         initRv();
     }
 
     private void initRv() {
-
+        mRv = (RecyclerView) getActivity().findViewById(R.id.rv);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRv.setLayoutManager(mLayoutManager);
         mRvAdapter = new RvAdapter(mTabItemList, mOnFeedListClickListener);
@@ -57,23 +60,28 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
     @Override
     public void updateCategoryMap(List dataList) {
 
+        Log.e("davinci42", "updateCategoryMap");
 
         mTabItemList.clear();
 
         for (UnreadCountsEntity entity : (List<UnreadCountsEntity>) dataList) {
 
-            if (entity.id.startsWith("user/") && entity.id.endsWith("global.all")) {
-                mHashMap.get("All").count = entity.count;
-                mHashMap.get("All").updated = entity.updated;
+            if (entity.id.equals(FeedlyData.ALL_CATEGORY_ID)) {
+                mHashMap.get(FeedlyData.ALL_CATEGORY_ID).count = entity.count;
+                mHashMap.get(FeedlyData.ALL_CATEGORY_ID).updated = entity.updated;
                 TabListItem tabListItem = new TabListItem();
                 tabListItem.id = entity.id;
                 tabListItem.count = entity.count;
-                tabListItem.title = "All";
+                tabListItem.title = FeedlyData.ALL_CATEGORY_LABEL;
                 tabListItem.updated = entity.updated;
-                tabListItem.type = "all";
+                tabListItem.type = TabListItem.TYPE_ALL;
                 mTabItemList.add(tabListItem);
 
-            } else if (entity.id.startsWith("user/") && entity.id.contains("/category/")) {
+            } else if (entity.id.startsWith("user/") && entity.id.contains("/category/")
+                    && !entity.id.equals(FeedlyData.ALL_CATEGORY_ID)) {
+
+                Log.e("davinci42", "category entity: " + entity.id);
+
                 mHashMap.get(entity.id).count = entity.count;
                 mHashMap.get(entity.id).updated = entity.updated;
 
@@ -87,28 +95,52 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
                 tabListItem.count = entity.count;
                 tabListItem.title = mHashMap.get(entity.id).label;
                 tabListItem.updated = entity.updated;
-                tabListItem.type = "category";
+                tabListItem.type = TabListItem.TYPE_CATEGORY;
 
                 mTabItemList.add(tabListItem);
             }
         }
 
-        mRvAdapter.notifyDataSetChanged();
-        Log.e("davinci42", "mTabList size: " + mTabItemList.size());
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mRvAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
 
     public OnFeedListClickListener mOnFeedListClickListener = new OnFeedListClickListener() {
         @Override
         public void onClick(View v) {
-            String itemType = (String) v.getTag();
+            TabListItem item = (TabListItem) v.getTag();
 
-            switch (itemType) {
-                case "all":
+            switch (item.type) {
+                case TabListItem.TYPE_ALL:
                     break;
-                case "category":
+                case TabListItem.TYPE_CATEGORY:
+
+                    List<Feed> feedList = mHashMap.get(item.id).feedList;
+
+                    for (Feed feed : feedList) {
+                        TabListItem tabItem = new TabListItem();
+                        tabItem.id = feed.id;
+                        tabItem.title = feed.title;
+                        tabItem.updated = feed.updated;
+                        tabItem.type = TabListItem.TYPE_FEED;
+                        mTabItemList.add(mTabItemList.indexOf(item) + 1, tabItem);
+                    }
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRvAdapter.notifyDataSetChanged();
+                        }
+                    });
+
                     break;
-                case "feed":
+                case TabListItem.TYPE_FEED:
                     break;
             }
         }
@@ -121,10 +153,6 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
 
     @Override
     public int getLayoutResId() {
-<<<<<<< HEAD
-        return R.layout.view_fragment;
-=======
         return R.layout.widget_rv;
->>>>>>> 0e1ccd5ca9b54efa410a908650c9c840afc9d883
     }
 }

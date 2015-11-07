@@ -1,6 +1,8 @@
 package io.github.davinci.seed.View.Adapter;
 
+import android.support.design.widget.TabLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,9 +61,18 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+        if (mTabItemList.get(position).count == 0 && !mTabItemList.get(position).type.equals(TabListItem.TYPE_FEED)) {
+            holder.mRootLayout.setVisibility(View.GONE);
+        } else {
+            holder.mRootLayout.setVisibility(View.VISIBLE);
+        }
+
         holder.mFeedTitle.setText(mTabItemList.get(position).title);
-        holder.mUnreadCount.setText(mTabItemList.get(position).count);
-        holder.mRootLayout.setTag(mTabItemList.get(position).type);
+        holder.mUnreadCount.setText(String.valueOf(mTabItemList.get(position).count));
+
+        holder.mRootLayout.setTag(mTabItemList.get(position));
         holder.mRootLayout.setOnClickListener(mOnFeedListClickListener);
+
     }
 }
