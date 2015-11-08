@@ -35,13 +35,13 @@ public class Entry extends FeedlyData {
     public double engagementRate;
     public String author;
     public boolean unread;
-    public OriginEntity origin;
+//    public OriginEntity origin;
     public String id;
     public List<String> keywords;
-    public List<AlternateEntity> alternate;
-    public List<TagsEntity> tags;
+//    public List<AlternateEntity> alternate;
+//    public List<TagsEntity> tags;
     public List<Category> categories;
-    public List<CanonicalEntity> canonical;
+//    public List<CanonicalEntity> canonical;
 
     public static class ContentEntity {
         /**
@@ -52,45 +52,45 @@ public class Entry extends FeedlyData {
         public String direction;
         public String content;
     }
+//
+//    public static class OriginEntity {
+//        /**
+//         * htmlUrl : http://www.theverge.com/
+//         * title : The Verge -  All Posts
+//         * streamId : feed/http://www.theverge.com/rss/full.xml
+//         */
+//
+//        public String htmlUrl;
+//        public String title;
+//        public String streamId;
+//    }
 
-    public static class OriginEntity {
-        /**
-         * htmlUrl : http://www.theverge.com/
-         * title : The Verge -  All Posts
-         * streamId : feed/http://www.theverge.com/rss/full.xml
-         */
+//    public static class AlternateEntity {
+//        /**
+//         * href : http://theverge.com/4236096
+//         * type : text/html
+//         */
+//
+//        public String href;
+//        public String type;
+//    }
 
-        public String htmlUrl;
-        public String title;
-        public String streamId;
-    }
-
-    public static class AlternateEntity {
-        /**
-         * href : http://theverge.com/4236096
-         * type : text/html
-         */
-
-        public String href;
-        public String type;
-    }
-
-    public static class TagsEntity {
-        /**
-         * id : user/c805fcbf-3acf-4302-a97e-d82f9d7c897f/tag/global.saved
-         */
-
-        public String id;
-    }
+//    public static class TagsEntity {
+//        /**
+//         * id : user/c805fcbf-3acf-4302-a97e-d82f9d7c897f/tag/global.saved
+//         */
+//
+//        public String id;
+//    }
 
 
-    public static class CanonicalEntity {
-        /**
-         * href : http://www.theverge.com/2013/4/17/4236096/nbc-heroes-may-get-a-second-lease-on-life-on-xbox-live
-         * type : text/html
-         */
-
-        public String href;
-        public String type;
-    }
+//    public static class CanonicalEntity {
+//        /**
+//         * href : http://www.theverge.com/2013/4/17/4236096/nbc-heroes-may-get-a-second-lease-on-life-on-xbox-live
+//         * type : text/html
+//         */
+//
+//        public String href;
+//        public String type;
+//    }
 }

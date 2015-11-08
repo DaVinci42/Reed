@@ -21,8 +21,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="io.github.davinci42.seed.View.Activity.RvActivity"
+            android:name="io.github.davinci42.seed.View.Activity.EntryRvActivity"
             android:label="@string/title_activity_rv"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name="io.github.davinci42.seed.View.Activity.EntryContentActivity"
+            android:label="@string/title_activity_entry_content"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

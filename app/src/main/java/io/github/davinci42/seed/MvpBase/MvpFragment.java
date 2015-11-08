@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import io.github.davinci42.seed.Model.Entity.FeedlyData;
 import io.github.davinci42.seed.Model.Entity.TabListItem;
-import io.github.davinci42.seed.View.Activity.RvActivity;
+import io.github.davinci42.seed.View.Activity.EntryRvActivity;
 
 public abstract class MvpFragment<V extends CoreView, P extends CorePresenter<V>> extends CoreFragment<V, P> implements MvpView{
 
@@ -33,7 +33,7 @@ public abstract class MvpFragment<V extends CoreView, P extends CorePresenter<V>
     public abstract int getLayoutResId();
 
     public void navigateToRvActivity(TabListItem item) {
-        Intent intent = new Intent(getActivity(), RvActivity.class);
+        Intent intent = new Intent(getActivity(), EntryRvActivity.class);
         intent.putExtra(FeedlyData.TABLISTITEM_KEY, item);
         startActivity(intent);
     }

@@ -20,8 +20,8 @@ import io.github.davinci42.seed.Model.Entity.UnreadCountsEntity;
 import io.github.davinci42.seed.MvpBase.MvpFragment;
 import io.github.davinci42.seed.Presenter.TabListPresenter;
 import io.github.davinci.seed.R;
-import io.github.davinci42.seed.View.Adapter.RvAdapter;
-import io.github.davinci42.seed.View.Interface.OnFeedListClickListener;
+import io.github.davinci42.seed.View.Adapter.TabRvAdapter;
+import io.github.davinci42.seed.View.Interface.OnListClickListener;
 import io.github.davinci42.seed.View.ViewInterface.TabListView;
 
 
@@ -30,7 +30,7 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
 
     private RecyclerView mRv;
 
-    private RvAdapter mRvAdapter;
+    private TabRvAdapter mRvAdapter;
     private List<TabListItem> mTabItemList = new ArrayList<>();
     private HashMap<String, CategoryWithFeeds> mHashMap = new HashMap<>();
 
@@ -46,7 +46,7 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
         mRv = (RecyclerView) getActivity().findViewById(R.id.rv);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRv.setLayoutManager(mLayoutManager);
-        mRvAdapter = new RvAdapter(mTabItemList, mOnFeedListClickListener);
+        mRvAdapter = new TabRvAdapter(mTabItemList, mOnFeedListClickListener);
         mRv.setAdapter(mRvAdapter);
 
         Log.e("davinci42", "getUnreadList");
@@ -107,7 +107,7 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
     }
 
 
-    public OnFeedListClickListener mOnFeedListClickListener = new OnFeedListClickListener() {
+    public OnListClickListener mOnFeedListClickListener = new OnListClickListener() {
         @Override
         public void onClick(View v) {
             TabListItem item = (TabListItem) v.getTag();
@@ -126,6 +126,7 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
                         tabItem.id = feed.id;
                         tabItem.title = feed.title;
                         tabItem.updated = feed.updated;
+
                         tabItem.type = TabListItem.TYPE_FEED;
                         mTabItemList.add(mTabItemList.indexOf(item) + 1, tabItem);
                     }

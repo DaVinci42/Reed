@@ -15,4 +15,5 @@ public class FeedlyData implements Serializable {
     public static final String UNCATEGORIZED_LABEL = "Uncategorized";
     public static final String FEED_MAP = "FeedMap";
     public static final String TABLISTITEM_KEY = "TabListItemKey";
+    public static final String ENTRY_KEY = "EntryKey";
 }

@@ -173,8 +173,35 @@ public class FeedlyNetwork {
         });
     }
 
-    public void getStreamEntryIdList(String streamId, int count, final SeedCallback<StreamEntryList> seedCallback) {
+    public void getStreamEntryListWithId(String streamId, int count, final SeedCallback<Entry> seedCallback) {
 
+        String href = rootUrl + "/v3/streams/ids?streamId=" + streamId + "&count=" + count;
+
+        mNetUtils.doGet(href, new SeedNetCallback() {
+            @Override
+            public void onSuccess(String httpResponse) {
+
+                StreamEntryList streamEntryList = new Gson().fromJson(httpResponse, StreamEntryList.class);
+
+                getEntryListWithId(streamEntryList.ids, new SeedCallback<Entry>() {
+                    @Override
+                    public void onSuccess(List<Entry> feedlyDataList) {
+                        seedCallback.onSuccess(feedlyDataList);
+                    }
+
+                    @Override
+                    public void onException(Exception e) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onException(Exception e) {
+
+            }
+        });
 
 
     }
