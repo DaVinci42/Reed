@@ -1,6 +1,7 @@
 package io.github.davinci.seed.MvpBase;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
+import io.github.davinci.seed.Model.Entity.FeedlyData;
+import io.github.davinci.seed.Model.Entity.TabListItem;
+import io.github.davinci.seed.View.Activity.RvActivity;
 
 public abstract class MvpFragment<V extends CoreView, P extends CorePresenter<V>> extends CoreFragment<V, P> implements MvpView{
 
@@ -28,5 +32,11 @@ public abstract class MvpFragment<V extends CoreView, P extends CorePresenter<V>
     }
 
     public abstract int getLayoutResId();
+
+    public void navigateToRvActivity(TabListItem item) {
+        Intent intent = new Intent(getActivity(), RvActivity.class);
+        intent.putExtra(FeedlyData.TABLISTITEM_KEY, item);
+        startActivity(intent);
+    }
 }
 

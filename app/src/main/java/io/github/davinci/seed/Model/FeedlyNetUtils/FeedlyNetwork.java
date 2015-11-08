@@ -9,6 +9,7 @@ import java.util.List;
 import io.github.davinci.seed.Model.Entity.Category;
 import io.github.davinci.seed.Model.Entity.Entry;
 import io.github.davinci.seed.Model.Entity.Feed;
+import io.github.davinci.seed.Model.Entity.StreamEntryList;
 import io.github.davinci.seed.Model.Entity.Subscription;
 import io.github.davinci.seed.Model.Entity.UnreadCount;
 import io.github.davinci.seed.Model.Entity.UnreadCountsEntity;
@@ -170,6 +171,12 @@ public class FeedlyNetwork {
 
             }
         });
+    }
+
+    public void getStreamEntryIdList(String streamId, int count, final SeedCallback<StreamEntryList> seedCallback) {
+
+
+
     }
 
 

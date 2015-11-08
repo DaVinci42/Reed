@@ -41,7 +41,7 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mHashMap = (HashMap<String, CategoryWithFeeds>) this.getArguments().getSerializable("FeedMap");
+        mHashMap = (HashMap<String, CategoryWithFeeds>) this.getArguments().getSerializable(FeedlyData.FEED_MAP);
 
         initRv();
     }
@@ -118,6 +118,8 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
 
             switch (item.type) {
                 case TabListItem.TYPE_ALL:
+                    navigateToRvActivity(item);
+
                     break;
                 case TabListItem.TYPE_CATEGORY:
 

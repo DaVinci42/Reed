@@ -19,6 +19,7 @@ import java.util.Map;
 
 import io.github.davinci.seed.Model.Entity.CategoryWithFeeds;
 import io.github.davinci.seed.Model.Entity.Feed;
+import io.github.davinci.seed.Model.Entity.FeedlyData;
 import io.github.davinci.seed.MvpBase.MvpActivity;
 import io.github.davinci.seed.Presenter.MainPresenter;
 import io.github.davinci.seed.R;
@@ -52,7 +53,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
         fragmentList.add(new SavedForLaterFragment());
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("FeedMap", mHashMap);
+        bundle.putSerializable(FeedlyData.FEED_MAP, mHashMap);
 
         for (Fragment fragment : fragmentList) {
             fragment.setArguments(bundle);
@@ -94,7 +95,6 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     @Override
     public void onEmptyToken() {
         Toast.makeText(MainActivity.this, "Empty UserId & Token in SignHelper", Toast.LENGTH_LONG).show();
-
     }
 
 }
