@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "io.github.davinci.seed"
+        applicationId "io.github.davinci42.seed"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1

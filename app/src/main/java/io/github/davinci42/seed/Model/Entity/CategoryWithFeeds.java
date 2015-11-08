@@ -1,0 +1,15 @@
+package io.github.davinci42.seed.Model.Entity;
+
+import java.util.ArrayList;
+
+/**
+ * Created by davinci42 on 15/10/26.
+ */
+public class CategoryWithFeeds extends FeedlyData{
+
+    public String label;
+    public String id;
+    public int count;
+    public long updated;
+    public ArrayList<Feed> feedList = new ArrayList<>();
+}
