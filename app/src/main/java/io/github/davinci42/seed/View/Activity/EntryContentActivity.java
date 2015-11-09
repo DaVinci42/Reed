@@ -40,8 +40,8 @@ public class EntryContentActivity extends AppCompatActivity {
         mTvTitle.setText(mEntry.title);
         mTvAuthor.setText(mEntry.author);
         Log.e("davinci42", "Entry: " + new Gson().toJson(mEntry));
-        if (mEntry.content != null && mEntry.content.content != null) {
-            mTvContent.setText(Html.fromHtml(mEntry.content.content));
+        if (mEntry.summary != null && mEntry.summary.content != null) {
+            mTvContent.setText(Html.fromHtml(mEntry.summary.content));
         }
     }
 }
