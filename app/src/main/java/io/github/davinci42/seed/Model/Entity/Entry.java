@@ -60,23 +60,23 @@ public class Entry extends FeedlyData {
 
     public List<CanonicalEntity> canonical;
 
-    public static class SummaryEntity {
+    public static class SummaryEntity extends FeedlyData{
         public String content;
         public String direction;
     }
 
-    public static class OriginEntity {
+    public static class OriginEntity  extends FeedlyData {
         public String htmlUrl;
         public String streamId;
         public String title;
     }
 
-    public static class AlternateEntity {
+    public static class AlternateEntity  extends FeedlyData {
         public String href;
         public String type;
     }
 
-    public static class CanonicalEntity {
+    public static class CanonicalEntity  extends FeedlyData {
         public String href;
         public String type;
     }
