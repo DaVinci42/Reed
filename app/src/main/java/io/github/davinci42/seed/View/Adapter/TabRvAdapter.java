@@ -1,12 +1,15 @@
 package io.github.davinci42.seed.View.Adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -60,7 +63,7 @@ public class TabRvAdapter extends RecyclerView.Adapter<TabRvAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        if (mTabItemList.get(position).count == 0 && !mTabItemList.get(position).type.equals(TabListItem.TYPE_FEED)) {
+        if (mTabItemList.get(position).count == 0) {
             holder.mRlRootLayout.setVisibility(View.GONE);
         } else {
             holder.mRlRootLayout.setVisibility(View.VISIBLE);

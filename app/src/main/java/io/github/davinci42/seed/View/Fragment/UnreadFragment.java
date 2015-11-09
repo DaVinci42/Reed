@@ -76,14 +76,17 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
             } else if (entity.id.startsWith("user/") && entity.id.contains("/category/")
                     && !entity.id.equals(FeedlyData.ALL_CATEGORY_ID)) {
 
-                Log.e("davinci42", "category entity: " + entity.id);
-
                 mHashMap.get(entity.id).count = entity.count;
                 mHashMap.get(entity.id).updated = entity.updated;
 
                 for (Feed feed : mHashMap.get(entity.id).feedList) {
-                    feed.count = entity.count;
-                    feed.updated = entity.updated;
+
+                    for (UnreadCountsEntity countsEntity : (List<UnreadCountsEntity>) dataList) {
+                        if (feed.id.equals(countsEntity.id)) {
+                            feed.count = countsEntity.count;
+                            feed.updated = countsEntity.updated;
+                        }
+                    }
                 }
 
                 TabListItem tabListItem = new TabListItem();
@@ -92,6 +95,7 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
                 tabListItem.title = mHashMap.get(entity.id).label;
                 tabListItem.updated = entity.updated;
                 tabListItem.type = TabListItem.TYPE_CATEGORY;
+                tabListItem.ifFocus = false;
 
                 mTabItemList.add(tabListItem);
             }
@@ -119,17 +123,43 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
                     break;
                 case TabListItem.TYPE_CATEGORY:
 
+                    item.ifFocus = !item.ifFocus;
                     List<Feed> feedList = mHashMap.get(item.id).feedList;
 
-                    for (Feed feed : feedList) {
-                        TabListItem tabItem = new TabListItem();
-                        tabItem.id = feed.id;
-                        tabItem.title = feed.title;
-                        tabItem.updated = feed.updated;
+                    if (item.ifFocus) {
+                        for (Feed feed : feedList) {
+                            TabListItem tabItem = new TabListItem();
+                            tabItem.id = feed.id;
+                            tabItem.title = feed.title;
+                            tabItem.updated = feed.updated;
+                            tabItem.count = feed.count;
+                            tabItem.type = TabListItem.TYPE_FEED;
 
-                        tabItem.type = TabListItem.TYPE_FEED;
-                        mTabItemList.add(mTabItemList.indexOf(item) + 1, tabItem);
+                            if (tabItem.count != 0) {
+                                mTabItemList.add(mTabItemList.indexOf(item) + 1, tabItem);
+                            }
+
+                        }
+                    } else {
+
+                        // Try to handle ConcurrentModificationException
+
+                        List<TabListItem> tempTabList = new ArrayList<>();
+                        tempTabList.addAll(mTabItemList);
+                        for (Feed feed : feedList) {
+
+                            for (TabListItem tabListItem : mTabItemList) {
+
+                                if (feed.id.equals(tabListItem.id)) {
+                                    tempTabList.remove(tabListItem);
+                                }
+                            }
+                        }
+                        mTabItemList.clear();
+                        mTabItemList.addAll(tempTabList);
                     }
+
+
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -140,6 +170,7 @@ public class UnreadFragment extends MvpFragment<TabListView, TabListPresenter> i
 
                     break;
                 case TabListItem.TYPE_FEED:
+                    navigateToRvActivity(item);
                     break;
             }
         }

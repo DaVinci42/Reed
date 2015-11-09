@@ -4,9 +4,12 @@ package io.github.davinci42.seed.MvpBase;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.gson.Gson;
 
 import io.github.davinci42.seed.Model.Entity.FeedlyData;
 import io.github.davinci42.seed.Model.Entity.TabListItem;

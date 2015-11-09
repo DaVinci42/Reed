@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +49,7 @@ public class EntryRvActivity extends MvpActivity<RvView, RvPresenter> implements
     public void updateEntryList(List<Entry> entryList) {
         mEntryList.clear();
         mEntryList.addAll(entryList);
-        Log.e("davinci42", "EntryRvActivity updateEntryList");
-        Log.e("davinci42", "EntryList Size: " + mEntryList.size());
 
-//        for (Entry entry : entryList) {
-//            Log.e("davinci42", "Entry: " + entry.title);
-//        }
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -74,7 +71,7 @@ public class EntryRvActivity extends MvpActivity<RvView, RvPresenter> implements
         @Override
         public void onClick(View v) {
             Entry entry = (Entry) v.getTag();
-
+            Log.e("davinci42", "Entry: " + new Gson().toJson(entry));
             Intent intent = new Intent(EntryRvActivity.this, EntryContentActivity.class);
             intent.putExtra(FeedlyData.ENTRY_KEY, entry);
             startActivity(intent);

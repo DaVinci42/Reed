@@ -13,8 +13,12 @@ public class TabListItem extends FeedlyData {
 
     public String type;
 
+    public boolean ifFocus;
+
     public static final String TYPE_ALL = "All";
     public static final String TYPE_FEED = "Feed";
     public static final String TYPE_CATEGORY = "Category";
+
+
 
 }
