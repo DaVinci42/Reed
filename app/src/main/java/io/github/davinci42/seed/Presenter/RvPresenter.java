@@ -26,7 +26,7 @@ public class RvPresenter extends MvpPresenter<RvView> {
             }
 
             @Override
-            public void onException(Exception e) {
+            public void onException(String error) {
 
             }
         });

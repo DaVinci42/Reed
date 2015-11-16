@@ -28,7 +28,7 @@ public class MainPresenter extends MvpPresenter<MainView>{
 
             Log.e("davinci42", "Id && Token Got!");
 
-            mFeedNetwork.updateCategoryFeedMap(new SeedCallback<Subscription>() {
+            mFeedNetwork.getSubscriptionList(new SeedCallback<Subscription>() {
                 @Override
                 public void onSuccess(List<Subscription> feedlyDataList) {
 
@@ -92,7 +92,7 @@ public class MainPresenter extends MvpPresenter<MainView>{
                 }
 
                 @Override
-                public void onException(Exception e) {
+                public void onException(String e) {
 
                 }
             });

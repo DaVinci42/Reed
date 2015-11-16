@@ -28,7 +28,7 @@ public class FeedlyNetwork {
 
     String userId = SignHelper.getUserId();
 
-    public void updateCategoryFeedMap(final SeedCallback<Subscription> seedCallback) {
+    public void getSubscriptionList(final SeedCallback<Subscription> seedCallback) {
 
         final String href = rootUrl + "/v3/subscriptions";
         mNetUtils.doGet(href, new SeedNetCallback() {
@@ -42,7 +42,7 @@ public class FeedlyNetwork {
 
             @Override
             public void onException(Exception e) {
-                seedCallback.onException(e);
+                seedCallback.onException(String.valueOf(e));
             }
         });
     }
@@ -62,12 +62,12 @@ public class FeedlyNetwork {
 
             @Override
             public void onException(Exception e) {
-                seedCallback.onException(e);
+                seedCallback.onException(String.valueOf(e));
             }
         });
     }
 
-    public void getRecentlyRead(final SeedCallback seedCallback) {
+    public void getRecentlyRead(final SeedCallback<Entry> seedCallback) {
 
         String href = rootUrl + "user" + userId + "/tag/global.read";
         mNetUtils.doGet(href, new SeedNetCallback() {
@@ -80,7 +80,7 @@ public class FeedlyNetwork {
 
             @Override
             public void onException(Exception e) {
-                seedCallback.onException(e);
+                seedCallback.onException(String.valueOf(e));
             }
         });
     }
@@ -100,7 +100,7 @@ public class FeedlyNetwork {
                     }
 
                     @Override
-                    public void onException(Exception e) {
+                    public void onException(String error) {
 
                     }
                 });
@@ -153,6 +153,37 @@ public class FeedlyNetwork {
 
     }
 
+    public void getUnreadEntryList(final SeedCallback<Entry> seedCallback) {
+        getUnreadFeed(new SeedCallback<UnreadCountsEntity>() {
+            @Override
+            public void onSuccess(List<UnreadCountsEntity> feedlyDataList) {
+                List<String> entryIdList = new ArrayList<>();
+                for (UnreadCountsEntity unread : feedlyDataList) {
+                    if (unread.id.startsWith("feed/")) {
+                        entryIdList.add(unread.id);
+                    }
+                }
+
+                getEntryListWithId(entryIdList, new SeedCallback<Entry>() {
+                    @Override
+                    public void onSuccess(List<Entry> feedlyDataList) {
+                        seedCallback.onSuccess(feedlyDataList);
+                    }
+
+                    @Override
+                    public void onException(String error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onException(String error) {
+
+            }
+        });
+    }
+
     public void getFeedList(List<String> feedIdList, final SeedCallback<Feed> seedCallback) {
 
         String href = rootUrl + "/v3/feeds/.mget";
@@ -190,7 +221,7 @@ public class FeedlyNetwork {
                     }
 
                     @Override
-                    public void onException(Exception e) {
+                    public void onException(String error) {
 
                     }
                 });

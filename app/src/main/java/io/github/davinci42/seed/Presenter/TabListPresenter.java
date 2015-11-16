@@ -28,7 +28,7 @@ public class TabListPresenter extends MvpPresenter<TabListView> {
             }
 
             @Override
-            public void onException(Exception e) {
+            public void onException(String error) {
 
             }
         });

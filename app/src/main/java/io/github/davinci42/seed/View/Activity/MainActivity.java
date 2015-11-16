@@ -1,21 +1,16 @@
 package io.github.davinci42.seed.View.Activity;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.Window;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import io.github.davinci42.seed.Model.Entity.CategoryWithFeeds;
 import io.github.davinci42.seed.Model.Entity.FeedlyData;
-import io.github.davinci42.seed.Model.Utils.SeedCallback;
 import io.github.davinci42.seed.MvpBase.MvpActivity;
 import io.github.davinci42.seed.Presenter.MainPresenter;
 import io.github.davinci.seed.R;
@@ -29,29 +24,15 @@ import io.github.davinci42.seed.View.ViewInterface.MainView;
 
 public class MainActivity extends MvpActivity<MainView, MainPresenter> implements MainView {
 
-
     private static final String TAG = "RefreshService";
     private HashMap<String, CategoryWithFeeds> mHashMap;
 
-    public SeedCallback seedCallback = new SeedCallback() {
-        @Override
-        public void onSuccess(List feedlyDataList) {
-            Toast.makeText(MainActivity.this, "SeedCallback Success", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onException(Exception e) {
-
-        }
-    };
 
     @Override
     public void initData() {
 
         Intent intent = RefreshService.newIntent(this);
-        intent.putExtra(TAG, seedCallback);
         this.startService(intent);
-
         getPresenter().updateCategoryFeedMap();
     }
 
@@ -98,7 +79,6 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     @Override
     public void updateCategoryMap(HashMap<String, CategoryWithFeeds> hashMap) {
         mHashMap = hashMap;
-
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

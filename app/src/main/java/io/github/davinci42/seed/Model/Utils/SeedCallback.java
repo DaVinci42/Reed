@@ -8,5 +8,5 @@ import java.util.List;
  */
 public interface SeedCallback<T extends Serializable> extends Serializable{
     void onSuccess(List<T> feedlyDataList);
-    void onException(Exception e);
+    void onException(String error);
 }
