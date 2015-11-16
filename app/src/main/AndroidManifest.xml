@@ -30,6 +30,7 @@
             android:label="@string/title_activity_entry_content"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <service android:name="io.github.davinci42.seed.Service.RefreshService"/>
     </application>
 
 </manifest>

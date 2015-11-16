@@ -1,6 +1,7 @@
 package io.github.davinci42.seed.View.Activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,9 +15,11 @@ import java.util.List;
 
 import io.github.davinci42.seed.Model.Entity.CategoryWithFeeds;
 import io.github.davinci42.seed.Model.Entity.FeedlyData;
+import io.github.davinci42.seed.Model.Utils.SeedCallback;
 import io.github.davinci42.seed.MvpBase.MvpActivity;
 import io.github.davinci42.seed.Presenter.MainPresenter;
 import io.github.davinci.seed.R;
+import io.github.davinci42.seed.Service.RefreshService;
 import io.github.davinci42.seed.View.Adapter.PagerAdapter;
 import io.github.davinci42.seed.View.Fragment.RecentlyReadFragment;
 import io.github.davinci42.seed.View.Fragment.SavedForLaterFragment;
@@ -26,15 +29,40 @@ import io.github.davinci42.seed.View.ViewInterface.MainView;
 
 public class MainActivity extends MvpActivity<MainView, MainPresenter> implements MainView {
 
+
+    private static final String TAG = "RefreshService";
     private HashMap<String, CategoryWithFeeds> mHashMap;
 
+    public SeedCallback seedCallback = new SeedCallback() {
+        @Override
+        public void onSuccess(List feedlyDataList) {
+            Toast.makeText(MainActivity.this, "SeedCallback Success", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onException(Exception e) {
+
+        }
+    };
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_main_activity);
+    public void initData() {
+
+        Intent intent = RefreshService.newIntent(this);
+        intent.putExtra(TAG, seedCallback);
+        this.startService(intent);
 
         getPresenter().updateCategoryFeedMap();
+    }
+
+    @Override
+    public void updateView() {
+
+    }
+
+    @Override
+    public int getLayoutResId() {
+        return R.layout.view_main_activity;
     }
 
     private void initTabs() {
@@ -90,5 +118,6 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     public void onEmptyToken() {
         Toast.makeText(MainActivity.this, "Empty UserId & Token in SignHelper", Toast.LENGTH_LONG).show();
     }
+
 
 }

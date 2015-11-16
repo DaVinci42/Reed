@@ -29,14 +29,14 @@ public class EntryRvActivity extends MvpActivity<RvView, RvPresenter> implements
     private RecyclerView mRv;
     private EntryRvAdapter mRvAdapter;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rv);
+    public void initData() {
         TabListItem item = (TabListItem) getIntent().getSerializableExtra(FeedlyData.TABLISTITEM_KEY);
         getPresenter().getItemEntryList(item);
+    }
 
+    @Override
+    public void updateView() {
         initRv();
     }
 
@@ -77,4 +77,9 @@ public class EntryRvActivity extends MvpActivity<RvView, RvPresenter> implements
             startActivity(intent);
         }
     };
+
+    @Override
+    public int getLayoutResId() {
+        return R.layout.widget_rv;
+    }
 }
