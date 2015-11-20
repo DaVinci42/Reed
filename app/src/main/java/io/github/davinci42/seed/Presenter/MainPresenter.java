@@ -24,7 +24,7 @@ import io.github.davinci42.seed.View.ViewInterface.MainView;
 /**
  * Created by davinci42 on 15/10/26.
  */
-public class MainPresenter extends MvpPresenter<MainView>{
+public class MainPresenter extends MvpPresenter<MainView> {
 
     public Context mContext;
 
@@ -34,7 +34,7 @@ public class MainPresenter extends MvpPresenter<MainView>{
 
     private FeedlyNetwork mFeedNetwork = new FeedlyNetwork();
 
-    public void updateFeedDb(){
+    public void updateFeedDb() {
 
         mFeedNetwork.getSubscriptionList(new SeedCallback<Subscription>() {
             @Override
@@ -48,7 +48,6 @@ public class MainPresenter extends MvpPresenter<MainView>{
             }
         });
     }
-
 
     public void updateUnreadEntryDb() {
         mFeedNetwork.getUnreadEntryList(new SeedCallback<Entry>() {
@@ -88,7 +87,6 @@ public class MainPresenter extends MvpPresenter<MainView>{
         }
     }
 
-
     public void updateRecentlyEntryDb() {
         mFeedNetwork.getRecentlyEntryList(new SeedCallback<Entry>() {
             @Override
@@ -103,7 +101,6 @@ public class MainPresenter extends MvpPresenter<MainView>{
             }
         });
     }
-
 
     private void updateRecentlyDbFromEntryList(List<Entry> entryList) {
         RecentlyEntryDbHelper recentlyEntryDbHelper = new RecentlyEntryDbHelper(mContext);
@@ -195,8 +192,6 @@ public class MainPresenter extends MvpPresenter<MainView>{
             values.put(FeedDbSchema.Cols.ICONURL, subs.iconUrl);
             db.insert(FeedDbSchema.FeedTable.NAME, null, values);
         }
-
-
     }
 
 }

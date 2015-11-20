@@ -6,7 +6,7 @@ package io.github.davinci42.seed.Database;
 public class FeedDbSchema {
 
     public static final class FeedTable {
-        public static final String NAME = "Feed";
+        public static final String NAME = "FeedlyFeed";
     }
 
     public static final class Cols {

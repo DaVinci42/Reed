@@ -6,7 +6,7 @@ package io.github.davinci42.seed.Database;
 public class EntryDbSchema {
 
     public static final class EntryTable {
-        public static final String NAME = "UnreadEntry";
+        public static final String NAME = "FeedlyEntry";
     }
 
     public static final class Cols {
