@@ -1,16 +1,16 @@
 package io.github.davinci42.seed.Presenter;
 
-import android.util.Log;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
-import java.util.HashMap;
 import java.util.List;
+
+import io.github.davinci42.seed.Database.FeedDbHelper;
+import io.github.davinci42.seed.Database.FeedDbSchema;
 import io.github.davinci42.seed.Model.Entity.Category;
-import io.github.davinci42.seed.Model.Entity.CategoryWithFeeds;
-import io.github.davinci42.seed.Model.Entity.Feed;
-import io.github.davinci42.seed.Model.Entity.FeedlyData;
 import io.github.davinci42.seed.Model.Entity.Subscription;
 import io.github.davinci42.seed.Model.FeedlyNetUtils.FeedlyNetwork;
-import io.github.davinci42.seed.Model.FeedlyNetUtils.SignHelper;
 import io.github.davinci42.seed.Model.Utils.SeedCallback;
 import io.github.davinci42.seed.MvpBase.MvpPresenter;
 import io.github.davinci42.seed.View.ViewInterface.MainView;
@@ -20,85 +20,64 @@ import io.github.davinci42.seed.View.ViewInterface.MainView;
  */
 public class MainPresenter extends MvpPresenter<MainView>{
 
+    public Context mContext;
+
+    public void getContext(Context context) {
+        mContext = context;
+    }
+
     private FeedlyNetwork mFeedNetwork = new FeedlyNetwork();
 
-    public void updateCategoryFeedMap() {
+    public void updateFeedDb(){
 
-        if (SignHelper.ifIdAndTokenReady()) {
+        mFeedNetwork.getSubscriptionList(new SeedCallback<Subscription>() {
+            @Override
+            public void onSuccess(List<Subscription> feedlyDataList) {
+                updateFeedDbFromSubs(feedlyDataList);
+            }
 
-            Log.e("davinci42", "Id && Token Got!");
+            @Override
+            public void onException(String error) {
 
-            mFeedNetwork.getSubscriptionList(new SeedCallback<Subscription>() {
-                @Override
-                public void onSuccess(List<Subscription> feedlyDataList) {
+            }
+        });
+    }
 
-                    HashMap<String, CategoryWithFeeds> map = new HashMap<>();
 
-                    CategoryWithFeeds categoryAll =  new CategoryWithFeeds();
-                    categoryAll.id = FeedlyData.ALL_CATEGORY_ID;
-                    categoryAll.label = FeedlyData.ALL_CATEGORY_LABEL;
-                    map.put(categoryAll.id, categoryAll);
+    public void updateUnreadEntryDb() {}
 
-                    CategoryWithFeeds uncategorized =  new CategoryWithFeeds();
-                    uncategorized.id = FeedlyData.UNCATEGORIZED_ID;
-                    uncategorized.label = FeedlyData.UNCATEGORIZED_LABEL;
-                    map.put(uncategorized.id, uncategorized);
 
-                    for (Subscription subs : feedlyDataList) {
+    public void updateRecentlyEntryDb() {}
 
-                        if (!subs.categories.isEmpty()) {
 
-                            Feed feed = new Feed();
+    public void updateSavedEntryDb() {}
 
-                            feed.id = subs.id;
-                            feed.title = subs.title;
-                            feed.website = subs.website;
+    private void updateFeedDbFromSubs(List<Subscription> subscriptionList) {
+        FeedDbHelper feedDbHelper = new FeedDbHelper(mContext);
+        SQLiteDatabase db = feedDbHelper.getWritableDatabase();
 
-                            map.get(categoryAll.id).count += feed.count;
-                            map.get(categoryAll.id).feedList.add(feed);
+        feedDbHelper.onCreate(db);
 
-                            for (Category category : subs.categories) {
+        for (Subscription subs : subscriptionList) {
+            ContentValues values = new ContentValues();
 
-                                if (!map.containsKey(category.id)) {
+            String categoryId = "";
+            String categoryLabel = "";
+            if (!subs.categories.isEmpty()) {
+                for (Category category : subs.categories) {
 
-                                    CategoryWithFeeds categoryWithFeeds = new CategoryWithFeeds();
-                                    categoryWithFeeds.id = category.id;
-                                    categoryWithFeeds.label = category.label;
-                                    categoryWithFeeds.feedList.add(feed);
-
-                                    map.put(category.id, categoryWithFeeds);
-
-                                } else {
-                                    map.get(category.id).feedList.add(feed);
-                                }
-                            }
-
-                        } else {
-
-                            // Feed without category, put them in a new category called uncategorized
-                            Feed feed = new Feed();
-                            feed.id = subs.id;
-                            feed.title = subs.title;
-                            feed.website = subs.website;
-
-                            map.get(uncategorized.id).count += feed.count;
-                            map.get(uncategorized.id).feedList.add(feed);
-                        }
-                    }
-
-                    if (getView() != null) {
-                        getView().updateCategoryMap(map);
-                    }
-                }
-
-                @Override
-                public void onException(String e) {
+                    // Just remind to handle ';' at String end
+                    categoryId = categoryId + category.id + ";";
+                    categoryLabel = categoryLabel + category.label + ";";
 
                 }
-            });
-
-        } else {
-            getView().onEmptyToken();
+            }
+            values.put(FeedDbSchema.Cols.ID, subs.id);
+            values.put(FeedDbSchema.Cols.TITLE, subs.title);
+            values.put(FeedDbSchema.Cols.CATEGORYId, categoryId);
+            values.put(FeedDbSchema.Cols.CATEGORYLabel, categoryLabel);
+            values.put(FeedDbSchema.Cols.ICONURL, subs.iconUrl);
+            db.insert(FeedDbSchema.FeedTable.NAME, null, values);
         }
 
 

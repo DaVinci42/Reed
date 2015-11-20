@@ -1,6 +1,6 @@
 package io.github.davinci42.seed.View.Activity;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import io.github.davinci42.seed.Model.Entity.CategoryWithFeeds;
 import io.github.davinci42.seed.Model.Entity.FeedlyData;
+import io.github.davinci42.seed.Model.FeedlyNetUtils.SignHelper;
 import io.github.davinci42.seed.MvpBase.MvpActivity;
 import io.github.davinci42.seed.Presenter.MainPresenter;
 import io.github.davinci.seed.R;
-import io.github.davinci42.seed.Service.RefreshService;
 import io.github.davinci42.seed.View.Adapter.PagerAdapter;
 import io.github.davinci42.seed.View.Fragment.RecentlyReadFragment;
 import io.github.davinci42.seed.View.Fragment.SavedForLaterFragment;
@@ -24,22 +24,31 @@ import io.github.davinci42.seed.View.ViewInterface.MainView;
 
 public class MainActivity extends MvpActivity<MainView, MainPresenter> implements MainView {
 
-    private static final String TAG = "RefreshService";
     private HashMap<String, CategoryWithFeeds> mHashMap;
 
 
     @Override
     public void initData() {
-
-        Intent intent = RefreshService.newIntent(this);
-        this.startService(intent);
-        getPresenter().updateCategoryFeedMap();
+        if (SignHelper.ifIdAndTokenReady()) {
+            updateAllDb();
+        } else {
+            Toast.makeText(MainActivity.this, "Empty userId & token in SignHelper", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void updateView() {
 
     }
+
+
+    private void updateAllDb() {
+        getPresenter().updateFeedDb();
+        getPresenter().updateUnreadEntryDb();
+        getPresenter().updateRecentlyEntryDb();
+        getPresenter().updateSavedEntryDb();
+    }
+
 
     @Override
     public int getLayoutResId() {
@@ -91,7 +100,9 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
 
     @Override
     protected MainPresenter createPresenter() {
-        return new MainPresenter();
+        MainPresenter mainPresenter = new MainPresenter();
+        mainPresenter.getContext(this);
+        return mainPresenter;
     }
 
     @Override
