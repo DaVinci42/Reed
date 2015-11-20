@@ -6,7 +6,7 @@ package io.github.davinci42.seed.Database;
 public class EntryDbSchema {
 
     public static final class EntryTable {
-        public static final String NAME = "Entry";
+        public static final String NAME = "UnreadEntry";
     }
 
     public static final class Cols {
@@ -14,19 +14,15 @@ public class EntryDbSchema {
         public static final String ID = "id";
         public static final String TITLE = "title";
         public static final String AUTHOR = "author";
-        public static final String CATEGORYLABEL = "categoryLabel";
-        public static final String CATEGORYID = "categoryId";
 
         public static final String UPDATED = "updated";
 
         // StreamId in Entry Entity
         public static final String FEEDID = "feedId";
 
-
         // some Entry may not have content
         public static final String CONTENT = "content";
 
     }
-
 
 }

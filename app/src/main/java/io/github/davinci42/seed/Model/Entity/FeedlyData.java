@@ -10,6 +10,8 @@ import io.github.davinci42.seed.Model.FeedlyNetUtils.SignHelper;
 public class FeedlyData implements Serializable {
 
     public static final String ALL_CATEGORY_ID = "user/" + SignHelper.getUserId() + "/category/global.all";
+    public static final String RECENTLY_READ = "user/" + SignHelper.getUserId() + "/tag/global.read";
+    public static final String SAVED_FOR_LATER = "user/" + SignHelper.getUserId() + "/tag/global.saved";
     public static final String ALL_CATEGORY_LABEL = "All";
     public static final String UNCATEGORIZED_ID = "user/" + SignHelper.getUserId() + "/category/global.uncategorized";
     public static final String UNCATEGORIZED_LABEL = "Uncategorized";

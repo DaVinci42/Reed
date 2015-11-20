@@ -60,6 +60,8 @@ public class Entry extends FeedlyData {
 
     public List<CanonicalEntity> canonical;
 
+    public ContentEntity content;
+
     public static class SummaryEntity extends FeedlyData{
         public String content;
         public String direction;
@@ -79,5 +81,10 @@ public class Entry extends FeedlyData {
     public static class CanonicalEntity  extends FeedlyData {
         public String href;
         public String type;
+    }
+
+    public static class ContentEntity extends FeedlyData {
+        public String content;
+        public String direction;
     }
 }

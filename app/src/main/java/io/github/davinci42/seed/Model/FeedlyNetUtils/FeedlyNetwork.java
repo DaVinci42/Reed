@@ -1,18 +1,18 @@
 package io.github.davinci42.seed.Model.FeedlyNetUtils;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.davinci42.seed.Model.Entity.Category;
 import io.github.davinci42.seed.Model.Entity.Entry;
 import io.github.davinci42.seed.Model.Entity.Feed;
+import io.github.davinci42.seed.Model.Entity.FeedlyData;
 import io.github.davinci42.seed.Model.Entity.StreamEntryList;
 import io.github.davinci42.seed.Model.Entity.Subscription;
-import io.github.davinci42.seed.Model.Entity.UnreadCount;
-import io.github.davinci42.seed.Model.Entity.UnreadCountsEntity;
 import io.github.davinci42.seed.Model.Utils.NetUtils;
 import io.github.davinci42.seed.Model.Utils.SeedCallback;
 import io.github.davinci42.seed.Model.Utils.SeedNetCallback;
@@ -48,69 +48,58 @@ public class FeedlyNetwork {
     }
 
 
-    public void getCategoryList(final SeedCallback<Category> seedCallback) {
+    public void getUnreadEntryList(final SeedCallback<Entry> seedCallback) {
+        String streamId = FeedlyData.ALL_CATEGORY_ID;
+        int count = 1000;
 
-        String href = rootUrl + "/v3/categories";
-
-        mNetUtils.doGet(href, new SeedNetCallback() {
+        getStreamEntryListWithId(true, streamId, count, new SeedCallback<Entry>() {
             @Override
-            public void onSuccess(String response) {
-                List<Category> categoryList = new Gson().fromJson(response, new TypeToken<ArrayList<Category>>() {
-                }.getType());
-                seedCallback.onSuccess(categoryList);
+            public void onSuccess(List<Entry> feedlyDataList) {
+                seedCallback.onSuccess(feedlyDataList);
             }
 
             @Override
-            public void onException(Exception e) {
-                seedCallback.onException(String.valueOf(e));
+            public void onException(String error) {
+
             }
         });
     }
 
-    public void getRecentlyRead(final SeedCallback<Entry> seedCallback) {
+    public void getRecentlyEntryList(final SeedCallback<Entry> seedCallback) {
 
-        String href = rootUrl + "user" + userId + "/tag/global.read";
-        mNetUtils.doGet(href, new SeedNetCallback() {
+        String streamId = FeedlyData.RECENTLY_READ;
+        int count = 200;
+
+        getStreamEntryListWithId(false, streamId, count, new SeedCallback<Entry>() {
             @Override
-            public void onSuccess(String httpResponse) {
-                List<Entry> entryList = new Gson().fromJson(httpResponse, new TypeToken<ArrayList<Entry>>() {
-                }.getType());
-                seedCallback.onSuccess(entryList);
+            public void onSuccess(List<Entry> feedlyDataList) {
+                seedCallback.onSuccess(feedlyDataList);
             }
 
             @Override
-            public void onException(Exception e) {
-                seedCallback.onException(String.valueOf(e));
+            public void onException(String error) {
+
             }
         });
     }
 
     public void getSavedForLaterEntryList(final SeedCallback<Entry> seedCallback) {
 
-        String href = rootUrl + "user/" + userId + "/tag/global.saved";
-        mNetUtils.doGet(href, new SeedNetCallback() {
+        String streamId = FeedlyData.SAVED_FOR_LATER;
+        int count = 1000;
+
+        getStreamEntryListWithId(false, streamId, count, new SeedCallback<Entry>() {
             @Override
-            public void onSuccess(String httpResponse) {
-                List<String> entryIdList = new Gson().fromJson(httpResponse, new TypeToken<ArrayList<String>>() {
-                }.getType());
-                getEntryListWithId(entryIdList, new SeedCallback<Entry>() {
-                    @Override
-                    public void onSuccess(List<Entry> feedlyDataList) {
-                        seedCallback.onSuccess(feedlyDataList);
-                    }
-
-                    @Override
-                    public void onException(String error) {
-
-                    }
-                });
+            public void onSuccess(List<Entry> feedlyDataList) {
+                seedCallback.onSuccess(feedlyDataList);
             }
 
             @Override
-            public void onException(Exception e) {
+            public void onException(String error) {
 
             }
         });
+
     }
 
     public void getEntryListWithId(List<String> entryIdList, final SeedCallback<Entry> seedCallback) {
@@ -134,57 +123,8 @@ public class FeedlyNetwork {
         });
     }
 
-    public void getUnreadFeed(final SeedCallback<UnreadCountsEntity> seedCallback) {
 
-        String href = rootUrl + "/v3/markers/counts";
-
-        mNetUtils.doGet(href, new SeedNetCallback() {
-            @Override
-            public void onSuccess(String httpResponse) {
-                UnreadCount unreadCount = new Gson().fromJson(httpResponse, UnreadCount.class);
-                seedCallback.onSuccess(unreadCount.unreadcounts);
-            }
-
-            @Override
-            public void onException(Exception e) {
-
-            }
-        });
-
-    }
-
-    public void getUnreadEntryList(final SeedCallback<Entry> seedCallback) {
-        getUnreadFeed(new SeedCallback<UnreadCountsEntity>() {
-            @Override
-            public void onSuccess(List<UnreadCountsEntity> feedlyDataList) {
-                List<String> entryIdList = new ArrayList<>();
-                for (UnreadCountsEntity unread : feedlyDataList) {
-                    if (unread.id.startsWith("feed/")) {
-                        entryIdList.add(unread.id);
-                    }
-                }
-
-                getEntryListWithId(entryIdList, new SeedCallback<Entry>() {
-                    @Override
-                    public void onSuccess(List<Entry> feedlyDataList) {
-                        seedCallback.onSuccess(feedlyDataList);
-                    }
-
-                    @Override
-                    public void onException(String error) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onException(String error) {
-
-            }
-        });
-    }
-
-    public void getFeedList(List<String> feedIdList, final SeedCallback<Feed> seedCallback) {
+    public void getFeedListWithId(List<String> feedIdList, final SeedCallback<Feed> seedCallback) {
 
         String href = rootUrl + "/v3/feeds/.mget";
         String postData = new Gson().toJson(feedIdList);
@@ -204,9 +144,9 @@ public class FeedlyNetwork {
         });
     }
 
-    public void getStreamEntryListWithId(String streamId, int count, final SeedCallback<Entry> seedCallback) {
+    public void getStreamEntryListWithId(boolean unreadOnly, String streamId, int count, final SeedCallback<Entry> seedCallback) {
 
-        String href = rootUrl + "/v3/streams/ids?streamId=" + streamId + "&count=" + count;
+        String href = rootUrl + "/v3/streams/ids?streamId=" + streamId + "&count=" + count + "&unreadOnly=" + String.valueOf(unreadOnly);
 
         mNetUtils.doGet(href, new SeedNetCallback() {
             @Override
