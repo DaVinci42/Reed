@@ -1,8 +1,7 @@
 package io.github.davinci42.seed.MvpBase;
 
 /**
- * Created by davinci42 on 15/11/3.
+ * Created by davinci42 on 15/10/27.
  */
-public interface MvpView extends CoreView{
-
+public interface MvpView {
 }

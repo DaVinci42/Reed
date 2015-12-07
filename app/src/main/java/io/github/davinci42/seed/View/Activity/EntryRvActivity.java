@@ -1,12 +1,10 @@
 package io.github.davinci42.seed.View.Activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 
@@ -16,14 +14,14 @@ import java.util.List;
 import io.github.davinci42.seed.Model.Entity.Entry;
 import io.github.davinci42.seed.Model.Entity.FeedlyData;
 import io.github.davinci42.seed.Model.Entity.TabListItem;
-import io.github.davinci42.seed.MvpBase.MvpActivity;
+import io.github.davinci42.seed.MvpBase.BaseActivity;
 import io.github.davinci42.seed.Presenter.RvPresenter;
 import io.github.davinci.seed.R;
 import io.github.davinci42.seed.View.Adapter.EntryRvAdapter;
 import io.github.davinci42.seed.View.Interface.OnListClickListener;
 import io.github.davinci42.seed.View.ViewInterface.RvView;
 
-public class EntryRvActivity extends MvpActivity<RvView, RvPresenter> implements RvView {
+public class EntryRvActivity extends BaseActivity<RvView, RvPresenter> implements RvView {
 
     private List<Entry> mEntryList = new ArrayList<>();
     private RecyclerView mRv;

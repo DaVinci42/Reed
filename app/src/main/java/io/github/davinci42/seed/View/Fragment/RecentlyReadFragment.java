@@ -8,7 +8,7 @@ import android.view.View;
 
 import java.util.List;
 
-import io.github.davinci42.seed.MvpBase.MvpFragment;
+import io.github.davinci42.seed.MvpBase.BaseFragment;
 import io.github.davinci42.seed.Presenter.TabListPresenter;
 import io.github.davinci.seed.R;
 import io.github.davinci42.seed.View.ViewInterface.TabListView;
@@ -16,7 +16,7 @@ import io.github.davinci42.seed.View.ViewInterface.TabListView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecentlyReadFragment extends MvpFragment<TabListView, TabListPresenter> implements TabListView {
+public class RecentlyReadFragment extends BaseFragment<TabListView, TabListPresenter> implements TabListView {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

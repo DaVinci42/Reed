@@ -1,44 +1,42 @@
 package io.github.davinci42.seed.MvpBase;
 
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.google.gson.Gson;
+/**
+ * Created by davinci42 on 15/11/3.
+ */
+public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>> extends Fragment implements MvpView {
 
-import io.github.davinci42.seed.Model.Entity.FeedlyData;
-import io.github.davinci42.seed.Model.Entity.TabListItem;
-import io.github.davinci42.seed.View.Activity.EntryRvActivity;
+	private P mPresenter;
 
-public abstract class MvpFragment<V extends CoreView, P extends CorePresenter<V>> extends CoreFragment<V, P> implements MvpView{
+	@Override public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		if (mPresenter == null) {
+			mPresenter = createPresenter();
+		}
 
-    private View mView;
+		if (mPresenter == null) {
+			throw new NullPointerException("Presenter must not be null in " + this.getClass().getName());
+		}
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
+		mPresenter.attachView((V) this);
+	}
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (mView == null) {
-            mView = inflater.inflate(getLayoutResId(), container, false);
-        }
-        return mView;
-    }
+	@Override public void onDestroyView() {
+		super.onDestroyView();
+		// TODO 此处容易产生bug，不用用setRetainInstance(true)
 
-    public abstract int getLayoutResId();
+		if (mPresenter == null) {
+			mPresenter = createPresenter();
+		}
+		mPresenter.detachView(getRetainInstance());
+	}
 
-    public void navigateToRvActivity(TabListItem item) {
-        Intent intent = new Intent(getActivity(), EntryRvActivity.class);
-        intent.putExtra(FeedlyData.TABLISTITEM_KEY, item);
-        startActivity(intent);
-    }
+	protected abstract P createPresenter();
+
+	public P getPresenter() {
+		return mPresenter;
+	}
 }
-

@@ -1,25 +1,11 @@
 package io.github.davinci42.seed.MvpBase;
 
 /**
- * Created by davinci42 on 15/11/3.
+ * Created by davinci42 on 15/10/27.
  */
-public class MvpPresenter<V extends MvpView> implements CorePresenter<V> {
+public interface MvpPresenter<V extends MvpView> {
 
-    private V mView;
+	void attachView(V view);
 
-    @Override
-    public void attachView(V view) {
-        mView = view;
-    }
-
-    @Override
-    public void detachView(boolean retainInstance) {
-        if (!retainInstance) {
-            mView = null;
-        }
-    }
-
-    public V getView() {
-        return mView;
-    }
+	void detachView(boolean retainInstance);
 }

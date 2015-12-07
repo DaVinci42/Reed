@@ -1,25 +1,27 @@
 package io.github.davinci42.seed.MvpBase;
 
-
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-/**
- * Created by davinci42 on 15/11/3.
- */
-public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>> extends CoreActivity<V, P> implements MvpView {
+public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>> extends AppCompatActivity
+	implements MvpView {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(getLayoutResId());
+	protected P mPresenter;
 
-        initData();
-        updateView();
-    }
+	@Override protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mPresenter = createPresenter();
+		mPresenter.attachView((V) this);
+	}
 
-    public abstract int getLayoutResId();
+	protected abstract P createPresenter();
 
-    public abstract void initData();
+	@Override protected void onDestroy() {
+		super.onDestroy();
+		mPresenter.detachView(false);
+	}
 
-    public abstract void updateView();
+	public P getPresenter() {
+		return mPresenter;
+	}
 }
