@@ -18,14 +18,13 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
 
-	UnreadFragment unreadFragment;
-	RecentlyReadFragment recentlyReadFragment;
-	SavedForLaterFragment savedForLaterFragment;
+	private UnreadFragment unreadFragment;
+	private RecentlyReadFragment recentlyReadFragment;
+	private SavedForLaterFragment savedForLaterFragment;
 
 	@Override public void initData() {
 		if (SignHelper.ifIdAndTokenReady()) {
 			updateFeedDb();
-			updateEntryDb();
 			initTabs();
 		} else {
 			Toast.makeText(MainActivity.this, "Empty userId & token in SignHelper", Toast.LENGTH_SHORT).show();
@@ -34,6 +33,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
 	private void updateFeedDb() {
 		getPresenter().updateFeedDb();
+	}
+
+	@Override public void onFeedDbUpdated() {
+		updateEntryDb();
 	}
 
 	@Override public void updateView() {

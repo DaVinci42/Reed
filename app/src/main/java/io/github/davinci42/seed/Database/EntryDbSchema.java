@@ -23,6 +23,7 @@ public class EntryDbSchema {
 
 		// StreamId in Entry Entity
 		public static final String FEEDID = "feedId";
+		public static final String FEEDTITLE = "feedTitle";
 
 		// some Entry may not have content
 		public static final String CONTENT = "content";

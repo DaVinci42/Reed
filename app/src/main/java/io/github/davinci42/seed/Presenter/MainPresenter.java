@@ -58,8 +58,8 @@ public class MainPresenter extends BasePresenter<MainView> {
 
 	private void updateUnreadDbFromEntryList(List<Entry> entryList) {
 		UnreadEntryDbHelper unreadEntryDbHelper = new UnreadEntryDbHelper(mContext);
-		SQLiteDatabase db = unreadEntryDbHelper.getWritableDatabase();
-		unreadEntryDbHelper.onUpgrade(db, 1, 1);
+		SQLiteDatabase entryDb = unreadEntryDbHelper.getWritableDatabase();
+		unreadEntryDbHelper.onUpgrade(entryDb, 1, 1);
 
 		for (Entry entry : entryList) {
 			ContentValues values = new ContentValues();
@@ -69,12 +69,13 @@ public class MainPresenter extends BasePresenter<MainView> {
 			values.put(EntryDbSchema.Cols.AUTHOR, entry.author);
 			values.put(EntryDbSchema.Cols.UPDATED, entry.published);
 			values.put(EntryDbSchema.Cols.FEEDID, entry.origin.streamId);
+			values.put(EntryDbSchema.Cols.FEEDTITLE, entry.origin.title);
 
 			if (entry.content != null) {
 				values.put(EntryDbSchema.Cols.CONTENT, entry.content.content);
 			}
 
-			db.insert(EntryDbSchema.EntryTable.UNREAD_TABLE_NAME, null, values);
+			entryDb.insert(EntryDbSchema.EntryTable.UNREAD_TABLE_NAME, null, values);
 		}
 
 		getView().onUnreadDbUpdated();
@@ -159,7 +160,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 		for (Subscription subs : subscriptionList) {
 			ContentValues values = new ContentValues();
 
-			values.put(FeedDbSchema.Cols.ID, subs.id);
+			values.put(FeedDbSchema.Cols.FEEDID, subs.id);
 			values.put(FeedDbSchema.Cols.TITLE, subs.title);
 
 			String categoryId = "";
@@ -178,5 +179,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 			values.put(FeedDbSchema.Cols.ICONURL, subs.iconUrl);
 			db.insert(FeedDbSchema.FeedTable.NAME, null, values);
 		}
+
+		getView().onFeedDbUpdated();
 	}
 }

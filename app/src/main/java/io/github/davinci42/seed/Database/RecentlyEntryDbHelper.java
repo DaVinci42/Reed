@@ -19,6 +19,7 @@ public class RecentlyEntryDbHelper extends SQLiteOpenHelper {
 			EntryDbSchema.Cols.AUTHOR + ", " +
 			EntryDbSchema.Cols.UPDATED + ", " +
 			EntryDbSchema.Cols.FEEDID + ", " +
+			EntryDbSchema.Cols.FEEDTITLE + ", " +
 			EntryDbSchema.Cols.CONTENT + ")";
 
 	private static final String SQL_DELETE_ENTRIES =

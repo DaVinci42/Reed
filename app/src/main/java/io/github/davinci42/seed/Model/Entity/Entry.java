@@ -88,4 +88,7 @@ public class Entry extends FeedlyData {
         public String content;
         public String direction;
     }
+
+    // 手动添加字段
+    public List<String> categoryList = new ArrayList<>();
 }
