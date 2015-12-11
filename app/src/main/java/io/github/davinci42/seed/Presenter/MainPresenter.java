@@ -3,7 +3,6 @@ package io.github.davinci42.seed.Presenter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import io.github.davinci42.seed.Database.EntryDbSchema;
 import io.github.davinci42.seed.Database.FeedDbHelper;
 import io.github.davinci42.seed.Database.FeedDbSchema;
@@ -48,7 +47,6 @@ public class MainPresenter extends BasePresenter<MainView> {
 	public void updateUnreadEntryDb() {
 		mFeedNetwork.getUnreadEntryList(new SeedCallback<Entry>() {
 			@Override public void onSuccess(List<Entry> feedlyDataList) {
-				Log.e("davinci42", "Unread: " + feedlyDataList.size());
 				updateUnreadDbFromEntryList(feedlyDataList);
 			}
 
@@ -85,7 +83,6 @@ public class MainPresenter extends BasePresenter<MainView> {
 	public void updateRecentlyEntryDb() {
 		mFeedNetwork.getRecentlyEntryList(new SeedCallback<Entry>() {
 			@Override public void onSuccess(List<Entry> feedlyDataList) {
-				Log.e("davinci42", "Recently: " + feedlyDataList.size());
 				updateRecentlyDbFromEntryList(feedlyDataList);
 			}
 
@@ -121,7 +118,6 @@ public class MainPresenter extends BasePresenter<MainView> {
 	public void updateSavedEntryDb() {
 		mFeedNetwork.getSavedForLaterEntryList(new SeedCallback<Entry>() {
 			@Override public void onSuccess(List<Entry> feedlyDataList) {
-				Log.e("davinci42", "Saved: " + feedlyDataList.size());
 				updateSavedDbFromEntryList(feedlyDataList);
 			}
 

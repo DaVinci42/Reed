@@ -1,6 +1,7 @@
 package io.github.davinci42.seed.Model.Entity;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class Entry extends FeedlyData {
      * direction : ltr
      */
 
-    public SummaryEntity summary;
+    public SummaryEntity summary = new SummaryEntity();
     public String author;
     public long published;
     public String title;
@@ -44,23 +45,23 @@ public class Entry extends FeedlyData {
      * title : Deadspin
      */
 
-    public OriginEntity origin;
+    public OriginEntity origin = new OriginEntity();
     public boolean unread;
-    public List<String> keywords;
+    public List<String> keywords = new ArrayList<>();
     /**
      * href : http://feeds.gawker.com/~r/deadspin/full/~3/2Fk_U50mb9s/heres-a-guy-mooning-cyclists-in-the-tour-de-france-tod-693011191
      * type : text/html
      */
 
-    public List<AlternateEntity> alternate;
+    public List<AlternateEntity> alternate = new ArrayList<>();
     /**
      * href : http://deadspin.com/heres-a-guy-mooning-cyclists-in-the-tour-de-france-tod-693011191
      * type : text/html
      */
 
-    public List<CanonicalEntity> canonical;
+    public List<CanonicalEntity> canonical = new ArrayList<>();
 
-    public ContentEntity content;
+    public ContentEntity content = new ContentEntity();
 
     public static class SummaryEntity extends FeedlyData{
         public String content;

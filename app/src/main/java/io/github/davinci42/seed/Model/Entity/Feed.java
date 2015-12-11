@@ -1,5 +1,6 @@
 package io.github.davinci42.seed.Model.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class Feed extends FeedlyData {
     public boolean curated;
     public String state;
     public String id;
-    public List<String> topics;
+    public List<String> topics = new ArrayList<>();
     /**
      * feedId : feed/http://news.dbanotes.net/rss
      * description : Startup News of China

@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 import io.github.davinci.seed.R;
-import io.github.davinci42.seed.Model.Entity.CategoryWithFeeds;
 import io.github.davinci42.seed.Model.FeedlyNetUtils.SignHelper;
 import io.github.davinci42.seed.MvpBase.BaseActivity;
 import io.github.davinci42.seed.Presenter.MainPresenter;
@@ -15,7 +14,6 @@ import io.github.davinci42.seed.View.Fragment.SavedForLaterFragment;
 import io.github.davinci42.seed.View.Fragment.UnreadFragment;
 import io.github.davinci42.seed.View.ViewInterface.MainView;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
@@ -26,11 +24,16 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
 	@Override public void initData() {
 		if (SignHelper.ifIdAndTokenReady()) {
+			updateFeedDb();
 			updateEntryDb();
 			initTabs();
 		} else {
 			Toast.makeText(MainActivity.this, "Empty userId & token in SignHelper", Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	private void updateFeedDb() {
+		getPresenter().updateFeedDb();
 	}
 
 	@Override public void updateView() {
@@ -78,7 +81,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 	}
 
 	@Override public void onUnreadDbUpdated() {
-		unreadFragment.onUnreadDbUpdated();
+		unreadFragment.getEntryListFromDb();
 	}
 
 	@Override public void onRecentlyDbUpdated() {

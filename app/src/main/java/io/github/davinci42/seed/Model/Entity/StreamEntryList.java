@@ -1,5 +1,6 @@
 package io.github.davinci42.seed.Model.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,5 +14,5 @@ public class StreamEntryList extends FeedlyData {
      */
 
     public String continuation;
-    public List<String> ids;
+    public List<String> ids = new ArrayList<>();
 }

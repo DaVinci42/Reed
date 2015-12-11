@@ -1,15 +1,11 @@
 package io.github.davinci42.seed.MvpBase;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import io.github.davinci42.seed.Model.Entity.FeedlyData;
-import io.github.davinci42.seed.Model.Entity.TabListItem;
-import io.github.davinci42.seed.View.Activity.EntryRvActivity;
+import butterknife.ButterKnife;
 
 public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>> extends MvpFragment<V, P>
 	implements BaseView {
@@ -25,15 +21,10 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
 		if (mView == null) {
 			mView = inflater.inflate(getLayoutResId(), container, false);
 		}
+		ButterKnife.bind(this, mView);
 		return mView;
 	}
 
 	public abstract int getLayoutResId();
-
-	public void navigateToRvActivity(TabListItem item) {
-		Intent intent = new Intent(getActivity(), EntryRvActivity.class);
-		intent.putExtra(FeedlyData.TABLISTITEM_KEY, item);
-		startActivity(intent);
-	}
 }
 

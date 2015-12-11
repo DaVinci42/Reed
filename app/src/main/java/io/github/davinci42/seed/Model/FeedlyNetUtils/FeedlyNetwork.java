@@ -1,13 +1,7 @@
 package io.github.davinci42.seed.Model.FeedlyNetUtils;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import io.github.davinci42.seed.Model.Entity.Entry;
 import io.github.davinci42.seed.Model.Entity.Feed;
 import io.github.davinci42.seed.Model.Entity.FeedlyData;
@@ -16,6 +10,8 @@ import io.github.davinci42.seed.Model.Entity.Subscription;
 import io.github.davinci42.seed.Model.Utils.NetUtils;
 import io.github.davinci42.seed.Model.Utils.SeedCallback;
 import io.github.davinci42.seed.Model.Utils.SeedNetCallback;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by davinci42 on 15/10/21.
@@ -68,7 +64,7 @@ public class FeedlyNetwork {
     public void getRecentlyEntryList(final SeedCallback<Entry> seedCallback) {
 
         String streamId = FeedlyData.RECENTLY_READ;
-        int count = 200;
+        int count = 1000;
 
         getStreamEntryListWithId(false, streamId, count, new SeedCallback<Entry>() {
             @Override
