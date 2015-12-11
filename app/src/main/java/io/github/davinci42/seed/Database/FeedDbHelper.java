@@ -14,7 +14,7 @@ public class FeedDbHelper extends SQLiteOpenHelper {
 
 	private static final String SQL_CREATE_ENTRIES = "CREATE TABLE IF NOT EXISTS " + FeedDbSchema.FeedTable.NAME + "(" +
 		FeedDbSchema.Cols.FEEDID + ", " +
-		FeedDbSchema.Cols.TITLE + ", " +
+		FeedDbSchema.Cols.FEEDTITLE + ", " +
 		FeedDbSchema.Cols.CATEGORYId + ", " +
 		FeedDbSchema.Cols.CATEGORYLabel + ", " +
 		FeedDbSchema.Cols.ICONURL + ")";

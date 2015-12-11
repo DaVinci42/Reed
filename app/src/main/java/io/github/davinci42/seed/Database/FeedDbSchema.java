@@ -12,7 +12,7 @@ public class FeedDbSchema {
 	public static final class Cols {
 
 		public static final String FEEDID = "id";
-		public static final String TITLE = "title";
+		public static final String FEEDTITLE = "title";
 		public static final String CATEGORYLabel = "categoryLabel";
 		public static final String CATEGORYId = "categoryId";
 

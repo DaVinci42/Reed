@@ -50,8 +50,10 @@ public class TabListPresenter extends BasePresenter<TabListView> {
 		if (mCategoryMap.isEmpty()) {
 			getCategoryList();
 		}
+
 		UnreadEntryDbHelper dbHelper = new UnreadEntryDbHelper(context);
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		dbHelper.onCreate(db);
 		List<Entry> unreadList = new ArrayList<>();
 
 		String[] projection = {
@@ -71,8 +73,12 @@ public class TabListPresenter extends BasePresenter<TabListView> {
 				entry.title = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.TITLE));
 				entry.author = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.AUTHOR));
 				entry.content.content = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.CONTENT));
-				entry.origin.title = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.FEEDTITLE));
-				entry.origin.streamId = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.FEEDID));
+				try {
+					entry.origin.title = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.FEEDTITLE));
+					entry.origin.streamId = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.FEEDID));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				entry.published =
 					Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.UPDATED)));
 				entry.categoryList.add(mCategoryMap.get(entry.origin.streamId));

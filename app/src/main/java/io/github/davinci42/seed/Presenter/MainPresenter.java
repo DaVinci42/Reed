@@ -161,7 +161,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 			ContentValues values = new ContentValues();
 
 			values.put(FeedDbSchema.Cols.FEEDID, subs.id);
-			values.put(FeedDbSchema.Cols.TITLE, subs.title);
+			values.put(FeedDbSchema.Cols.FEEDTITLE, subs.title);
 
 			String categoryId = "";
 			String categoryLabel = "";

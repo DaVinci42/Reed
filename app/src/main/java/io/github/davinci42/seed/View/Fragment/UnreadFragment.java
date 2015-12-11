@@ -1,6 +1,7 @@
 package io.github.davinci42.seed.View.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -82,10 +83,16 @@ public class UnreadFragment extends BaseFragment<TabListView, TabListPresenter> 
 				List<Entry> entryList = new ArrayList<>();
 				for (Entry entry : mCatgoryMap.get(category)) {
 					entryList.add(entry);
+					Log.e("davinci42", "category: " + category + " entry: " + entry.categoryList.get(0));
 				}
 				mEntryList.add(entryList);
 			}
-			mTabElvAdapter.notifyDataSetChanged();
+
+			getActivity().runOnUiThread(new Runnable() {
+				@Override public void run() {
+					mTabElvAdapter.notifyDataSetChanged();
+				}
+			});
 		}
 	}
 }

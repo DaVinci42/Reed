@@ -1,5 +1,8 @@
 package io.github.davinci42.seed.Database;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by davinci42 on 15/11/16.
  */
@@ -27,5 +30,7 @@ public class EntryDbSchema {
 
 		// some Entry may not have content
 		public static final String CONTENT = "content";
+
+		public static final List<String> CATEGORY = new ArrayList<>();
 	}
 }
