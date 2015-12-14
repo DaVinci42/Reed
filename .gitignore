@@ -2,6 +2,8 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/nspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
 .DS_Store
 /build
 /captures
