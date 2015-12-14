@@ -13,7 +13,9 @@ public class FeedDbSchema {
 
 		public static final String FEEDID = "id";
 		public static final String FEEDTITLE = "title";
-		public static final String CATEGORYLabel = "categoryLabel";
+
+		// categoryA; categoryB;
+		public static final String CATEGORYLABEL = "categoryLabel";
 		public static final String CATEGORYId = "categoryId";
 
 		// some feed may not have an icon url

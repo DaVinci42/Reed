@@ -23,12 +23,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 	private SavedForLaterFragment savedForLaterFragment;
 
 	@Override public void initData() {
-		if (SignHelper.ifIdAndTokenReady()) {
-			updateFeedDb();
-			initTabs();
-		} else {
-			Toast.makeText(MainActivity.this, "Empty userId & token in SignHelper", Toast.LENGTH_SHORT).show();
-		}
+		updateFeedDb();
+		initTabs();
 	}
 
 	private void updateFeedDb() {

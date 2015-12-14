@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface TabListView extends BaseView {
 
-	void updateEsData(List<Entry> entries);
+	void updateElvData(List<Entry> entries);
 }
 
 

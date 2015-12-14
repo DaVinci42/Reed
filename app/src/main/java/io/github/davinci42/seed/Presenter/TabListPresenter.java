@@ -3,6 +3,7 @@ package io.github.davinci42.seed.Presenter;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import io.github.davinci42.seed.Database.EntryDbSchema;
 import io.github.davinci42.seed.Database.FeedDbHelper;
 import io.github.davinci42.seed.Database.FeedDbSchema;
@@ -11,6 +12,7 @@ import io.github.davinci42.seed.Model.Entity.Entry;
 import io.github.davinci42.seed.MvpBase.BasePresenter;
 import io.github.davinci42.seed.View.ViewInterface.TabListView;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,31 +23,33 @@ import java.util.Map;
 public class TabListPresenter extends BasePresenter<TabListView> {
 
 	// feed id, category label
-	private Map<String, String> mCategoryMap = new HashMap<>();
+	private Map<String, List<String>> mCategoryMap = new HashMap<>();
 	private Context mContext;
 
-	public void getCategoryList() {
+	public synchronized void getCategoryList() {
 		FeedDbHelper feedDbHelper = new FeedDbHelper(mContext);
 		SQLiteDatabase feedDb = feedDbHelper.getReadableDatabase();
+		mCategoryMap.clear();
 
 		String[] projection = {
-			FeedDbSchema.Cols.FEEDID, FeedDbSchema.Cols.CATEGORYLabel,
+			FeedDbSchema.Cols.FEEDID, FeedDbSchema.Cols.CATEGORYLABEL,
 		};
 
 		Cursor cursor = feedDb.query(FeedDbSchema.FeedTable.NAME, projection, null, null, null, null, null);
-		int count = cursor.getColumnCount();
+		int count = cursor.getCount();
 		if (count != 0) {
 			for (int i = 0; i < count; i++) {
 				cursor.moveToPosition(i);
 				String feedId = cursor.getString(cursor.getColumnIndexOrThrow(FeedDbSchema.Cols.FEEDID));
-				String categoryLabel = cursor.getString(cursor.getColumnIndexOrThrow(FeedDbSchema.Cols.CATEGORYLabel));
-				mCategoryMap.put(feedId, categoryLabel);
+				String categoryLabel = cursor.getString(cursor.getColumnIndexOrThrow(FeedDbSchema.Cols.CATEGORYLABEL));
+				String[] category = categoryLabel.split("; ");
+				mCategoryMap.put(feedId, Arrays.asList(category));
 			}
 		}
 		cursor.close();
 	}
 
-	public void updateUnreadList(Context context) {
+	public synchronized void updateUnreadList(Context context) {
 		mContext = context;
 		if (mCategoryMap.isEmpty()) {
 			getCategoryList();
@@ -58,6 +62,7 @@ public class TabListPresenter extends BasePresenter<TabListView> {
 
 		String[] projection = {
 			EntryDbSchema.Cols.TITLE, EntryDbSchema.Cols.AUTHOR, EntryDbSchema.Cols.CONTENT, EntryDbSchema.Cols.UPDATED,
+			EntryDbSchema.Cols.FEEDTITLE, EntryDbSchema.Cols.FEEDID
 		};
 
 		String sortOrder = EntryDbSchema.Cols.UPDATED + " DESC";
@@ -65,7 +70,7 @@ public class TabListPresenter extends BasePresenter<TabListView> {
 		Cursor cursor =
 			db.query(EntryDbSchema.EntryTable.UNREAD_TABLE_NAME, projection, null, null, null, null, sortOrder);
 
-		int count = cursor.getColumnCount();
+		int count = cursor.getCount();
 		if (count != 0) {
 			for (int i = 0; i < count; i++) {
 				cursor.moveToPosition(i);
@@ -73,22 +78,21 @@ public class TabListPresenter extends BasePresenter<TabListView> {
 				entry.title = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.TITLE));
 				entry.author = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.AUTHOR));
 				entry.content.content = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.CONTENT));
-				try {
-					entry.origin.title = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.FEEDTITLE));
-					entry.origin.streamId = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.FEEDID));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				entry.origin.title = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.FEEDTITLE));
+				entry.origin.streamId = cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.FEEDID));
 				entry.published =
 					Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(EntryDbSchema.Cols.UPDATED)));
-				entry.categoryList.add(mCategoryMap.get(entry.origin.streamId));
+
+				if (mCategoryMap.get(entry.origin.streamId) != null) {
+					entry.categoryList = mCategoryMap.get(entry.origin.streamId);
+				}
 				unreadList.add(entry);
 			}
 		}
 
 		cursor.close();
 
-		getView().updateEsData(unreadList);
+		getView().updateElvData(unreadList);
 	}
 
 	public void updateRecentlyList() {

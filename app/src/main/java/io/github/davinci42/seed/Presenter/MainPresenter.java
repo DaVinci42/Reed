@@ -3,6 +3,7 @@ package io.github.davinci42.seed.Presenter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import io.github.davinci42.seed.Database.EntryDbSchema;
 import io.github.davinci42.seed.Database.FeedDbHelper;
 import io.github.davinci42.seed.Database.FeedDbSchema;
@@ -56,7 +57,8 @@ public class MainPresenter extends BasePresenter<MainView> {
 		});
 	}
 
-	private void updateUnreadDbFromEntryList(List<Entry> entryList) {
+	private synchronized void updateUnreadDbFromEntryList(List<Entry> entryList) {
+
 		UnreadEntryDbHelper unreadEntryDbHelper = new UnreadEntryDbHelper(mContext);
 		SQLiteDatabase entryDb = unreadEntryDbHelper.getWritableDatabase();
 		unreadEntryDbHelper.onUpgrade(entryDb, 1, 1);
@@ -68,8 +70,11 @@ public class MainPresenter extends BasePresenter<MainView> {
 			values.put(EntryDbSchema.Cols.TITLE, entry.title);
 			values.put(EntryDbSchema.Cols.AUTHOR, entry.author);
 			values.put(EntryDbSchema.Cols.UPDATED, entry.published);
-			values.put(EntryDbSchema.Cols.FEEDID, entry.origin.streamId);
-			values.put(EntryDbSchema.Cols.FEEDTITLE, entry.origin.title);
+
+			if (entry.origin != null) {
+				values.put(EntryDbSchema.Cols.FEEDID, entry.origin.streamId);
+				values.put(EntryDbSchema.Cols.FEEDTITLE, entry.origin.title);
+			}
 
 			if (entry.content != null) {
 				values.put(EntryDbSchema.Cols.CONTENT, entry.content.content);
@@ -93,7 +98,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 		});
 	}
 
-	private void updateRecentlyDbFromEntryList(List<Entry> entryList) {
+	private synchronized void updateRecentlyDbFromEntryList(List<Entry> entryList) {
 		RecentlyEntryDbHelper recentlyEntryDbHelper = new RecentlyEntryDbHelper(mContext);
 		SQLiteDatabase db = recentlyEntryDbHelper.getWritableDatabase();
 		recentlyEntryDbHelper.onUpgrade(db, 1, 1);
@@ -128,7 +133,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 		});
 	}
 
-	private void updateSavedDbFromEntryList(List<Entry> entryList) {
+	private synchronized void updateSavedDbFromEntryList(List<Entry> entryList) {
 		SavedEntryDbHelper savedEntryDbHelper = new SavedEntryDbHelper(mContext);
 		SQLiteDatabase db = savedEntryDbHelper.getWritableDatabase();
 		savedEntryDbHelper.onUpgrade(db, 1, 1);
@@ -152,7 +157,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 		getView().onSavedDbUpdated();
 	}
 
-	private void updateFeedDbFromSubs(List<Subscription> subscriptionList) {
+	private synchronized void updateFeedDbFromSubs(List<Subscription> subscriptionList) {
 		FeedDbHelper feedDbHelper = new FeedDbHelper(mContext);
 		SQLiteDatabase db = feedDbHelper.getWritableDatabase();
 		feedDbHelper.onUpgrade(db, 1, 1);
@@ -168,14 +173,13 @@ public class MainPresenter extends BasePresenter<MainView> {
 			if (!subs.categories.isEmpty()) {
 				for (Category category : subs.categories) {
 
-					// Just remind to handle ';' at String end
-					categoryId = categoryId + category.id + ";";
-					categoryLabel = categoryLabel + category.label + ";";
+					// Just remind to handle '; ' at String end
+					categoryId = categoryId + category.id + "; ";
+					categoryLabel = categoryLabel + category.label + "; ";
 				}
 			}
-
 			values.put(FeedDbSchema.Cols.CATEGORYId, categoryId);
-			values.put(FeedDbSchema.Cols.CATEGORYLabel, categoryLabel);
+			values.put(FeedDbSchema.Cols.CATEGORYLABEL, categoryLabel);
 			values.put(FeedDbSchema.Cols.ICONURL, subs.iconUrl);
 			db.insert(FeedDbSchema.FeedTable.NAME, null, values);
 		}

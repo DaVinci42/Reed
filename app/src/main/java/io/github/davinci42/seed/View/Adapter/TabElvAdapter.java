@@ -77,6 +77,6 @@ public class TabElvAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override public int getChildrenCount(int groupPosition) {
-		return mEntryList.size();
+		return mEntryList.get(groupPosition).size();
 	}
 }

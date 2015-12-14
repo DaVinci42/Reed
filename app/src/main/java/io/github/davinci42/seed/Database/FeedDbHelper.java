@@ -10,13 +10,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class FeedDbHelper extends SQLiteOpenHelper {
 
 	private static final int VERSION = 1;
-	private static final String DATABASE_NAME = "feed.db";
+	private static final String DATABASE_NAME = "Feed.db";
 
 	private static final String SQL_CREATE_ENTRIES = "CREATE TABLE IF NOT EXISTS " + FeedDbSchema.FeedTable.NAME + "(" +
 		FeedDbSchema.Cols.FEEDID + ", " +
 		FeedDbSchema.Cols.FEEDTITLE + ", " +
 		FeedDbSchema.Cols.CATEGORYId + ", " +
-		FeedDbSchema.Cols.CATEGORYLabel + ", " +
+		FeedDbSchema.Cols.CATEGORYLABEL + ", " +
 		FeedDbSchema.Cols.ICONURL + ")";
 
 	private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + FeedDbSchema.FeedTable.NAME;

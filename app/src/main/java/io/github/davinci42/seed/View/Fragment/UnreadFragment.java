@@ -22,7 +22,7 @@ public class UnreadFragment extends BaseFragment<TabListView, TabListPresenter> 
 	@Bind(R.id.elv) ExpandableListView mElv;
 	@Bind(R.id.tv_empty_hint) TextView mTvEmptyHint;
 
-	private Map<String, List<Entry>> mCatgoryMap = new HashMap<>();
+	private Map<String, List<Entry>> mCategoryMap = new HashMap<>();
 	private List<String> mCategoryList = new ArrayList<>();
 	private List<List<Entry>> mEntryList = new ArrayList<>();
 	private TabElvAdapter mTabElvAdapter;
@@ -49,41 +49,53 @@ public class UnreadFragment extends BaseFragment<TabListView, TabListPresenter> 
 	}
 
 	public void getEntryListFromDb() {
+		Log.e("davinci42", "UnreadFrag getEntryListFromDb");
 		getPresenter().updateUnreadList(getContext());
 	}
 
-	@Override public void updateEsData(List<Entry> entries) {
-		if (entries.isEmpty()) {
-			mElv.setVisibility(View.GONE);
-			mTvEmptyHint.setVisibility(View.VISIBLE);
-		} else {
-			mElv.setVisibility(View.VISIBLE);
-			mTvEmptyHint.setVisibility(View.GONE);
+	@Override public void updateElvData(List<Entry> entries) {
+		Log.e("davinci42", "UnreadFrag updateEsData");
+		final int count = entries.size();
+
+		getActivity().runOnUiThread(new Runnable() {
+			@Override public void run() {
+				if (count == 0) {
+					mElv.setVisibility(View.GONE);
+					mTvEmptyHint.setVisibility(View.VISIBLE);
+				} else {
+					mElv.setVisibility(View.VISIBLE);
+					mTvEmptyHint.setVisibility(View.GONE);
+				}
+			}
+		});
+
+		if (count != 0) {
+
+			mCategoryMap.clear();
+			mCategoryList.clear();
+			mEntryList.clear();
 
 			for (Entry entry : entries) {
 				if (!entry.categoryList.isEmpty()) {
 					for (String category : entry.categoryList) {
-						if (!mCatgoryMap.containsKey(category)) {
+						if (!mCategoryMap.containsKey(category)) {
 							// map 中没有对应 category
 							List<Entry> entryList = new ArrayList<>();
 							entryList.add(entry);
-							mCatgoryMap.put(category, entryList);
+							mCategoryMap.put(category, entryList);
 						} else {
 							// map 中已存在对应 category,直接添加 entry
-							mCatgoryMap.get(category).add(entry);
+							mCategoryMap.get(category).add(entry);
 						}
 					}
 				}
 			}
 
-			for (String category : mCatgoryMap.keySet()) {
-				mCategoryList.clear();
-				mEntryList.clear();
+			for (String category : mCategoryMap.keySet()) {
 				mCategoryList.add(category);
 				List<Entry> entryList = new ArrayList<>();
-				for (Entry entry : mCatgoryMap.get(category)) {
+				for (Entry entry : mCategoryMap.get(category)) {
 					entryList.add(entry);
-					Log.e("davinci42", "category: " + category + " entry: " + entry.categoryList.get(0));
 				}
 				mEntryList.add(entryList);
 			}

@@ -30,7 +30,7 @@ public class SavedForLaterFragment extends BaseFragment<TabListView, TabListPres
 		return R.layout.view_fragment;
 	}
 
-	@Override public void updateEsData(List<Entry> entries) {
+	@Override public void updateElvData(List<Entry> entries) {
 
 	}
 }

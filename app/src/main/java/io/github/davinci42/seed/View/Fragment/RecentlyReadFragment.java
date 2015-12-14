@@ -28,7 +28,7 @@ public class RecentlyReadFragment extends BaseFragment<TabListView, TabListPrese
 		return R.layout.view_fragment;
 	}
 
-	@Override public void updateEsData(List<Entry> entries) {
+	@Override public void updateElvData(List<Entry> entries) {
 
 	}
 }
