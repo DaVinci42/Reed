@@ -1,9 +1,13 @@
 package io.github.davinci42.seed.View.Activity;
 
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
+import butterknife.Bind;
 import io.github.davinci.seed.R;
 import io.github.davinci42.seed.Model.FeedlyNetUtils.SignHelper;
 import io.github.davinci42.seed.MvpBase.BaseActivity;
@@ -18,13 +22,19 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
 
+	@Bind(R.id.toolbar) Toolbar mToolbar;
+
 	private UnreadFragment unreadFragment;
 	private RecentlyReadFragment recentlyReadFragment;
 	private SavedForLaterFragment savedForLaterFragment;
 
 	@Override public void initData() {
-		updateFeedDb();
-		initTabs();
+
+		if (SignHelper.ifIdAndTokenReady()) {
+			updateFeedDb();
+		} else {
+			Toast.makeText(MainActivity.this, "Empty userId & token", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	private void updateFeedDb() {
@@ -36,7 +46,16 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 	}
 
 	@Override public void updateView() {
+		initToolbar();
+		initTabs();
+	}
 
+	private void initToolbar() {
+
+		//setSupportActionBar(mToolbar);
+		mToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
+		mToolbar.setTitleTextColor(Color.WHITE);
+		mToolbar.setTitle(R.string.app_name);
 	}
 
 	private void updateEntryDb() {
@@ -68,9 +87,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
 		TabLayout tabLayout = (TabLayout) findViewById(R.id.tab);
 		tabLayout.setupWithViewPager(viewPager);
-		tabLayout.getTabAt(0).setText("Unread");
-		tabLayout.getTabAt(1).setText("Recently");
-		tabLayout.getTabAt(2).setText("Saved");
+
+		tabLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
+		tabLayout.getTabAt(0).setIcon(R.drawable.ic_brightness_1_white_24dp);
+		tabLayout.getTabAt(1).setIcon(R.drawable.ic_panorama_fish_eye_white_24dp);
+		tabLayout.getTabAt(2).setIcon(R.drawable.ic_star_white_24dp);
 	}
 
 	@Override protected MainPresenter createPresenter() {
@@ -84,10 +105,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 	}
 
 	@Override public void onRecentlyDbUpdated() {
-
+		recentlyReadFragment.getEntryListFromDb();
 	}
 
 	@Override public void onSavedDbUpdated() {
-
+		savedForLaterFragment.getEntryListFromDb();
 	}
 }

@@ -10,6 +10,7 @@ import java.util.List;
 public interface TabListView extends BaseView {
 
 	void updateElvData(List<Entry> entries);
+
 }
 
 

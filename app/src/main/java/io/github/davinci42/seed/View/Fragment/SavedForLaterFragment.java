@@ -1,36 +1,56 @@
 package io.github.davinci42.seed.View.Fragment;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.View;
-
-import io.github.davinci42.seed.Model.Entity.Entry;
-import java.util.List;
-
-import io.github.davinci42.seed.MvpBase.BaseFragment;
-import io.github.davinci42.seed.Presenter.TabListPresenter;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
+import butterknife.Bind;
 import io.github.davinci.seed.R;
-import io.github.davinci42.seed.View.ViewInterface.TabListView;
+import io.github.davinci42.seed.Database.SavedEntryDbHelper;
+import io.github.davinci42.seed.Model.Entity.Entry;
+import io.github.davinci42.seed.View.Adapter.TabElvAdapter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class SavedForLaterFragment extends BaseFragment<TabListView, TabListPresenter> implements TabListView {
+public class SavedForLaterFragment extends TabListFragment {
 
-	@Override public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+	@Bind(R.id.elv) ExpandableListView mElv;
+	@Bind(R.id.tv_empty_hint) TextView mTvEmptyHint;
+
+	private Map<String, List<Entry>> mCategoryMap = new HashMap<>();
+	private List<String> mCategoryList = new ArrayList<>();
+	private List<List<Entry>> mEntryList = new ArrayList<>();
+	private TabElvAdapter mTabElvAdapter;
+
+	@Override public void getEntryListFromDb() {
+		getPresenter().updateEntryList(getContext(), new SavedEntryDbHelper(getContext()));
 	}
 
-	@Override protected TabListPresenter createPresenter() {
-		return new TabListPresenter();
+	@Override public Map<String, List<Entry>> getCategoryMap() {
+		return mCategoryMap;
 	}
 
-	@Override public int getLayoutResId() {
-
-		return R.layout.view_fragment;
+	@Override public List<String> getCategoryList() {
+		return mCategoryList;
 	}
 
-	@Override public void updateElvData(List<Entry> entries) {
+	@Override public List<List<Entry>> getEntryList() {
+		return mEntryList;
+	}
 
+	@Override public TabElvAdapter getTabElvAdapter() {
+		return mTabElvAdapter;
+	}
+
+	@Override public void setTabElvAdapter(TabElvAdapter adapter) {
+		this.mTabElvAdapter = adapter;
+	}
+
+	@Override public ExpandableListView getElv() {
+		return mElv;
+	}
+
+	@Override public TextView getEmptyView() {
+		return mTvEmptyHint;
 	}
 }

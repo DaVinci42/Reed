@@ -1,6 +1,7 @@
 package io.github.davinci42.seed.MvpBase;
 
 import android.os.Bundle;
+import butterknife.ButterKnife;
 
 /**
  * Created by davinci42 on 15/11/3.
@@ -12,6 +13,7 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter<V
 		super.onCreate(savedInstanceState);
 		setContentView(getLayoutResId());
 
+		ButterKnife.bind(this);
 		initData();
 		updateView();
 	}

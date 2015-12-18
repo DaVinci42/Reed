@@ -3,10 +3,12 @@ package io.github.davinci42.seed.Presenter;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import android.database.sqlite.SQLiteOpenHelper;
 import io.github.davinci42.seed.Database.EntryDbSchema;
 import io.github.davinci42.seed.Database.FeedDbHelper;
 import io.github.davinci42.seed.Database.FeedDbSchema;
+import io.github.davinci42.seed.Database.RecentlyEntryDbHelper;
+import io.github.davinci42.seed.Database.SavedEntryDbHelper;
 import io.github.davinci42.seed.Database.UnreadEntryDbHelper;
 import io.github.davinci42.seed.Model.Entity.Entry;
 import io.github.davinci42.seed.MvpBase.BasePresenter;
@@ -27,15 +29,15 @@ public class TabListPresenter extends BasePresenter<TabListView> {
 	private Context mContext;
 
 	public synchronized void getCategoryList() {
-		FeedDbHelper feedDbHelper = new FeedDbHelper(mContext);
-		SQLiteDatabase feedDb = feedDbHelper.getReadableDatabase();
+		FeedDbHelper dbHelper = new FeedDbHelper(mContext);
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		mCategoryMap.clear();
 
 		String[] projection = {
 			FeedDbSchema.Cols.FEEDID, FeedDbSchema.Cols.CATEGORYLABEL,
 		};
 
-		Cursor cursor = feedDb.query(FeedDbSchema.FeedTable.NAME, projection, null, null, null, null, null);
+		Cursor cursor = db.query(FeedDbSchema.FeedTable.NAME, projection, null, null, null, null, null);
 		int count = cursor.getCount();
 		if (count != 0) {
 			for (int i = 0; i < count; i++) {
@@ -47,18 +49,30 @@ public class TabListPresenter extends BasePresenter<TabListView> {
 			}
 		}
 		cursor.close();
+		db.close();
 	}
 
-	public synchronized void updateUnreadList(Context context) {
+	public synchronized void updateEntryList(Context context, SQLiteOpenHelper openHelper) {
 		mContext = context;
 		if (mCategoryMap.isEmpty()) {
 			getCategoryList();
 		}
 
-		UnreadEntryDbHelper dbHelper = new UnreadEntryDbHelper(context);
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		dbHelper.onCreate(db);
-		List<Entry> unreadList = new ArrayList<>();
+		SQLiteDatabase db = openHelper.getReadableDatabase();
+		openHelper.onCreate(db);
+		List<Entry> entryList = new ArrayList<>();
+
+		String tableName;
+
+		if (openHelper instanceof UnreadEntryDbHelper) {
+			tableName = EntryDbSchema.EntryTable.UNREAD_TABLE_NAME;
+		} else if (openHelper instanceof RecentlyEntryDbHelper) {
+			tableName = EntryDbSchema.EntryTable.RECENTLY_TABLE_NAME;
+		} else if (openHelper instanceof SavedEntryDbHelper) {
+			tableName = EntryDbSchema.EntryTable.SAVED_TABLE_NAME;
+		} else {
+			tableName = "";
+		}
 
 		String[] projection = {
 			EntryDbSchema.Cols.TITLE, EntryDbSchema.Cols.AUTHOR, EntryDbSchema.Cols.CONTENT, EntryDbSchema.Cols.UPDATED,
@@ -67,8 +81,7 @@ public class TabListPresenter extends BasePresenter<TabListView> {
 
 		String sortOrder = EntryDbSchema.Cols.UPDATED + " DESC";
 
-		Cursor cursor =
-			db.query(EntryDbSchema.EntryTable.UNREAD_TABLE_NAME, projection, null, null, null, null, sortOrder);
+		Cursor cursor = db.query(tableName, projection, null, null, null, null, sortOrder);
 
 		int count = cursor.getCount();
 		if (count != 0) {
@@ -86,20 +99,13 @@ public class TabListPresenter extends BasePresenter<TabListView> {
 				if (mCategoryMap.get(entry.origin.streamId) != null) {
 					entry.categoryList = mCategoryMap.get(entry.origin.streamId);
 				}
-				unreadList.add(entry);
+				entryList.add(entry);
 			}
 		}
 
 		cursor.close();
+		db.close();
 
-		getView().updateElvData(unreadList);
-	}
-
-	public void updateRecentlyList() {
-
-	}
-
-	public void updateSavedList() {
-
+		getView().updateElvData(entryList);
 	}
 }

@@ -1,12 +1,15 @@
 package io.github.davinci42.seed.View.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import io.github.davinci42.seed.Model.Entity.Entry;
+import io.github.davinci42.seed.Model.Entity.FeedlyData;
+import io.github.davinci42.seed.View.Activity.EntryContentActivity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +30,19 @@ public class TabElvAdapter extends BaseExpandableListAdapter {
 
 	@Override public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView,
 		ViewGroup parent) {
-		Entry entry = mEntryList.get(groupPosition).get(childPosition);
+		final Entry entry = mEntryList.get(groupPosition).get(childPosition);
 		if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(android.R.layout.simple_list_item_1, parent, false);
 		}
 
 		TextView tvTitle = (TextView) convertView.findViewById(android.R.id.text1);
 		tvTitle.setText(entry.title);
+
+		convertView.setOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View v) {
+				navigateToContentActivity(entry);
+			}
+		});
 
 		return convertView;
 	}
@@ -78,5 +87,11 @@ public class TabElvAdapter extends BaseExpandableListAdapter {
 
 	@Override public int getChildrenCount(int groupPosition) {
 		return mEntryList.get(groupPosition).size();
+	}
+
+	private void navigateToContentActivity(Entry entry) {
+		Intent intent = new Intent(mContext, EntryContentActivity.class);
+		intent.putExtra(FeedlyData.ENTRY_KEY, entry);
+		mContext.startActivity(intent);
 	}
 }

@@ -60,8 +60,8 @@ public class MainPresenter extends BasePresenter<MainView> {
 	private synchronized void updateUnreadDbFromEntryList(List<Entry> entryList) {
 
 		UnreadEntryDbHelper unreadEntryDbHelper = new UnreadEntryDbHelper(mContext);
-		SQLiteDatabase entryDb = unreadEntryDbHelper.getWritableDatabase();
-		unreadEntryDbHelper.onUpgrade(entryDb, 1, 1);
+		SQLiteDatabase db = unreadEntryDbHelper.getWritableDatabase();
+		unreadEntryDbHelper.onUpgrade(db, 1, 1);
 
 		for (Entry entry : entryList) {
 			ContentValues values = new ContentValues();
@@ -80,8 +80,10 @@ public class MainPresenter extends BasePresenter<MainView> {
 				values.put(EntryDbSchema.Cols.CONTENT, entry.content.content);
 			}
 
-			entryDb.insert(EntryDbSchema.EntryTable.UNREAD_TABLE_NAME, null, values);
+			db.insert(EntryDbSchema.EntryTable.UNREAD_TABLE_NAME, null, values);
 		}
+
+		db.close();
 
 		getView().onUnreadDbUpdated();
 	}
@@ -118,6 +120,8 @@ public class MainPresenter extends BasePresenter<MainView> {
 
 			db.insert(EntryDbSchema.EntryTable.RECENTLY_TABLE_NAME, null, values);
 		}
+
+		db.close();
 		getView().onRecentlyDbUpdated();
 	}
 
@@ -154,6 +158,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 			db.insert(EntryDbSchema.EntryTable.SAVED_TABLE_NAME, null, values);
 		}
 
+		db.close();
 		getView().onSavedDbUpdated();
 	}
 
@@ -184,6 +189,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 			db.insert(FeedDbSchema.FeedTable.NAME, null, values);
 		}
 
+		db.close();
 		getView().onFeedDbUpdated();
 	}
 }
