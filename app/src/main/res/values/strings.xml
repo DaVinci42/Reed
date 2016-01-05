@@ -1,10 +1,8 @@
 <resources>
-    <string name="app_name">Seed</string>
-    <string name="action_settings">Settings</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_mvp">MvpActivity</string>
-    <string name="title_activity_rv">RvActivity</string>
-    <string name="title_activity_entry_content">EntryContentActivity</string>
+	<string name="app_name">Reed</string>
+	<string name="unread_frag_name">Unread</string>
+	<string name="recently_frag_name">Recently</string>
+	<string name="saved_frag_name">Saved</string>
+	<string name="hello_world">Hello Nerd!!!</string>
+	<string name="elv_category_icon">Category Icon</string>
 </resources>

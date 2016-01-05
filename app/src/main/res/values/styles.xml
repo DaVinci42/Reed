@@ -2,17 +2,11 @@
 
 	<!-- Base application theme. -->
 	<style name="AppTheme"
-		parent="AppTheme.Seed">
-		<!-- Customize your theme here. -->
-
-	</style>
-
-	<style name="AppTheme.Seed"
 		parent="Theme.AppCompat.Light.NoActionBar">
-		<item name="android:colorPrimary">@color/primary_color</item>
-		<item name="android:colorPrimaryDark">@color/primary_color_dark</item>
-		<item name="android:statusBarColor">@color/primary_color_dark</item>
-		<item name="android:windowActionBar">false</item>
+		<!-- Customize your theme here. -->
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
 	</style>
 
 </resources>

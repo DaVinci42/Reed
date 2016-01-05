@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:padding="4dp"
+	android:orientation="vertical"
+	tools:context="io.github.davinci42.reed.View.Activity.EntryContentActivity"
+	>
+
+	<TextView
+		android:id="@+id/tv_time"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		tools:text="12:23"
+		android:padding="4dp"
+		/>
+
+	<TextView
+		android:id="@+id/tv_title"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		tools:text="[前端] websocket探索其与语音、图片的能力"
+		style="?android:titleTextStyle"
+		android:padding="4dp"
+		/>
+
+	<TextView
+		android:id="@+id/tv_feed"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		tools:text="稀土掘金"
+		android:padding="4dp"
+		/>
+
+	<WebView
+		android:id="@+id/wv_content"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		/>
+
+
+
+</LinearLayout>

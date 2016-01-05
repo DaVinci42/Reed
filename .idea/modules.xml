@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Seed.iml" filepath="$PROJECT_DIR$/Seed.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Reed.iml" filepath="$PROJECT_DIR$/Reed.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

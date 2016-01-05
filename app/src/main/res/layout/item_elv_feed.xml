@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	>
+
+	<ImageView
+		android:id="@+id/iv_icon"
+		android:layout_width="40dp"
+		android:layout_height="40dp"
+		android:scaleType="centerInside"
+		android:src="@drawable/ic_sort_white_24dp"
+		android:contentDescription="@string/elv_category_icon"
+		/>
+
+	<View
+		android:id="@+id/v_divider"
+		android:layout_width="@dimen/divider_height"
+		android:layout_height="40dp"
+		android:layout_toEndOf="@id/iv_icon"
+		android:background="@color/divider_color"
+		/>
+
+
+	<TextView
+		android:id="@+id/tv_count"
+		android:layout_width="wrap_content"
+		android:layout_height="40dp"
+		android:layout_alignParentEnd="true"
+		tools:text="34"
+		android:gravity="center"
+		android:paddingStart="8dp"
+		android:paddingEnd="16dp"
+		/>
+
+	<TextView
+		android:id="@+id/tv_title"
+		android:layout_width="wrap_content"
+		android:layout_toEndOf="@id/v_divider"
+		android:layout_height="40dp"
+		tools:text="稀土掘金稀土掘金稀土掘金稀土掘金稀土掘金稀土掘金稀土掘金"
+		android:gravity="center_vertical"
+		android:layout_toStartOf="@id/tv_count"
+		android:singleLine="true"
+		android:padding="8dp"
+		style="?android:attr/titleTextStyle"
+		/>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/divider_height"
+		android:background="@color/divider_color"
+		android:layout_below="@id/tv_title"
+		/>
+
+</RelativeLayout>
